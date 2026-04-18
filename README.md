@@ -83,6 +83,21 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v1.5 added over v1.4
+
+- Privacy Policy page at `/privacy` covering AdSense, Analytics, PIPEDA,
+  CCPA/CPRA, GDPR, children, cookies.
+- Terms & Conditions page at `/terms` with liability disclaimers, no-advice
+  clause, acceptable use, Ontario/Canada governing law.
+- Shared `SiteFooter.astro` component linking all subpages. Makes privacy
+  and terms discoverable from every page.
+- Homepage footer updated with Privacy and Terms links.
+
+**Important:** The Privacy Policy and Terms are template-quality, not
+lawyer-reviewed. Before heavy traffic or real revenue, have a lawyer
+review these. They cover the obvious bases but are not a substitute for
+legal counsel.
+
 ## What v1.4 added over v1.3
 
 - Social sharing buttons on the purchase-cost widget. Types a purchase,
