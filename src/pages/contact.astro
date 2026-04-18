@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+---
+
+<Base
+  title="Contact — What's My Time Worth"
+  description="Report an error, suggest a feature, or ask a question about the real hourly wage calculator."
+>
+  <main class="max-w-2xl mx-auto px-6 py-16 md:py-24">
+    <a href="/" class="font-mono text-xs uppercase tracking-widest text-mute hover:text-blood">
+      &larr; Back to the calculator
+    </a>
+
+    <h1 class="font-display font-light text-5xl md:text-6xl tracking-tightest mt-8 mb-6">
+      Contact
+    </h1>
+
+    <p class="font-display italic text-2xl text-ink-soft mb-12 leading-snug">
+      Corrections, ideas, or questions. No auto-reply. No marketing list.
+    </p>
+
+    <div class="space-y-6 font-body text-lg leading-relaxed mb-12">
+      <p>
+        Found an error in the math? Thought of a calculator that should exist?
+        Want to tell me the tool changed how you think about a big purchase?
+        Any of the above is fair game.
+      </p>
+
+      <p>
+        The form opens in a popup and uses spam protection, so no bots. You will
+        not get a follow-up newsletter or a marketing email. You get a reply
+        when I have something useful to say, and otherwise, silence.
+      </p>
+    </div>
+
+    <button
+      data-tally-open="ja90KQ"
+      data-tally-layout="modal"
+      data-tally-emoji-text="👋"
+      data-tally-emoji-animation="wave"
+      class="btn-primary cursor-pointer"
+    >
+      Open the contact form
+    </button>
+
+    <p class="mt-8 font-body text-sm text-mute italic">
+      The form is hosted by Tally. Your submission goes directly to me; nothing is
+      stored on this site. See the{' '}
+      <a href="/privacy" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">
+        privacy policy
+      </a>{' '}
+      for details.
+    </p>
+
+    <footer class="mt-24 pt-12 border-t border-ink/10">
+      <a href="/" class="btn-secondary">Back to the calculator</a>
+    </footer>
+  </main>
+
+  <SiteFooter />
+
+  <!-- Tally widget loader -->
+  <script async src="https://tally.so/widgets/embed.js"></script>
+</Base>

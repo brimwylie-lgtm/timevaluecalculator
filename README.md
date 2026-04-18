@@ -83,6 +83,19 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v1.6 added over v1.5
+
+- `/contact` page with a Tally-hosted popup form (form ID `ja90KQ`). Spam
+  protection via Tally's built-in Cloudflare Turnstile. Modal layout with
+  waving-emoji trigger.
+- Contact link added to both the homepage footer and the shared
+  `SiteFooter` on all subpages.
+- All four `mailto:hello@whatsmytimeworth.com` references removed from
+  Privacy, Terms, and About pages — replaced with links to the contact
+  form. No email addresses exposed anywhere on the site.
+- Tally widget script loads only on `/contact` (not globally), keeping
+  other pages free of third-party script weight.
+
 ## What v1.5 added over v1.4
 
 - Privacy Policy page at `/privacy` covering AdSense, Analytics, PIPEDA,
