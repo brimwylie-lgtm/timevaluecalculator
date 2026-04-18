@@ -83,6 +83,17 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v1.4 added over v1.3
+
+- Social sharing buttons on the purchase-cost widget. Types a purchase,
+  gets the hours-of-your-life result, can now share directly to Twitter/X,
+  Reddit, LinkedIn, WhatsApp, or copy-paste — each with the actual result
+  text pre-populated.
+- Mobile shows a single "Share" button that invokes the native share sheet
+  (`navigator.share`), giving access to every app on the phone.
+- Desktop shows compact icon buttons for the main platforms.
+- All icons are inline SVG — no external icon library dependency.
+
 ## What v1.3 added over v1.2
 
 - SEO-expanded homepage: keyword-aware body copy below the calculator, plus an

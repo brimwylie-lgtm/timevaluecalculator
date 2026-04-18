@@ -13,6 +13,7 @@ import {
 import { STATE_TAX_FLAT } from '../data/tax';
 import { CATALOG, type CatalogItem } from '../data/catalog';
 import ShareImage from './ShareImage';
+import PurchaseShareButtons from './PurchaseShareButtons';
 
 const DEFAULT_INPUTS: WageInputs = {
   annualSalary: 75000,
@@ -689,6 +690,13 @@ function Result({
                 {formatNumber(purchaseTranslation.workDays, 1)} work days ·{' '}
                 {formatNumber(purchaseTranslation.workWeeks, 2)} work weeks
               </p>
+
+              <PurchaseShareButtons
+                purchaseName={purchaseName}
+                purchaseCost={purchaseCost}
+                primaryValue={purchaseTranslation.primary.value}
+                primaryUnit={purchaseTranslation.primary.unit}
+              />
             </div>
           )}
         </div>
