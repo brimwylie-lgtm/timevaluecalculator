@@ -1,11 +1,23 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
-import { calculateWage, formatCurrency, formatCurrencyPrecise, formatNumber, translateCost, type WageInputs } from '../data/calculator';
+import { useState, useMemo } from 'react';
+import {
+  calculateWage,
+  applyScenarios,
+  findBestState,
+  formatCurrency,
+  formatCurrencyPrecise,
+  formatNumber,
+  translateCost,
+  type WageInputs,
+  type Scenarios,
+} from '../data/calculator';
 import { STATE_TAX_FLAT } from '../data/tax';
+import { CATALOG, type CatalogItem } from '../data/catalog';
 
 const DEFAULT_INPUTS: WageInputs = {
   annualSalary: 75000,
   state: 'NY',
   filingStatus: 'single',
+  age: 35,
   officialHoursPerWeek: 40,
   overtimeHoursPerWeek: 5,
   commuteMinutesOneWay: 30,
@@ -40,28 +52,13 @@ export default function Calculator() {
     <div className="min-h-screen">
       {step === 'intro' && <Intro onStart={() => goTo('salary')} />}
       {step === 'salary' && (
-        <SalaryStep
-          inputs={inputs}
-          update={update}
-          onNext={() => goTo('time')}
-          onBack={() => goTo('intro')}
-        />
+        <SalaryStep inputs={inputs} update={update} onNext={() => goTo('time')} onBack={() => goTo('intro')} />
       )}
       {step === 'time' && (
-        <TimeStep
-          inputs={inputs}
-          update={update}
-          onNext={() => goTo('money')}
-          onBack={() => goTo('salary')}
-        />
+        <TimeStep inputs={inputs} update={update} onNext={() => goTo('money')} onBack={() => goTo('salary')} />
       )}
       {step === 'money' && (
-        <MoneyStep
-          inputs={inputs}
-          update={update}
-          onNext={() => goTo('result')}
-          onBack={() => goTo('time')}
-        />
+        <MoneyStep inputs={inputs} update={update} onNext={() => goTo('result')} onBack={() => goTo('time')} />
       )}
       {step === 'result' && (
         <Result
@@ -112,7 +109,7 @@ function Intro({ onStart }: { onStart: () => void }) {
           divided by every hour it actually takes.
         </p>
         <p className="font-display text-2xl text-ink">
-          Twelve questions. One uncomfortable number.
+          A few questions. One uncomfortable number.
         </p>
       </div>
 
@@ -228,7 +225,7 @@ function SalaryStep({
       </Field>
 
       <Field label="Filing status">
-        <div className="flex gap-4 mt-3">
+        <div className="flex gap-4 mt-3 flex-wrap">
           {(['single', 'married'] as const).map((s) => (
             <button
               key={s}
@@ -243,6 +240,17 @@ function SalaryStep({
             </button>
           ))}
         </div>
+      </Field>
+
+      <Field
+        label="Your age"
+        hint="So we can tell you how many years of your life this pace eats. Defaults to 35."
+      >
+        <NumberInput
+          value={inputs.age}
+          onChange={(n) => update('age', n)}
+          suffix="years old"
+        />
       </Field>
 
       <StepNav onBack={onBack} onNext={onNext} nextLabel="Next: your time &rarr;" />
@@ -446,6 +454,23 @@ function Result({
 }) {
   const [purchaseName, setPurchaseName] = useState('');
   const [purchaseCost, setPurchaseCost] = useState<number>(0);
+  const [activeCategory, setActiveCategory] = useState(CATALOG[0].id);
+
+  const [scenarios, setScenarios] = useState<Scenarios>({
+    remoteWork: false,
+    packedLunch: false,
+    movedState: null,
+  });
+
+  // Compute best state to offer as a suggestion
+  const bestState = useMemo(() => findBestState(inputs), [inputs]);
+
+  // Recompute scenario result
+  const scenarioInputs = useMemo(() => applyScenarios(inputs, scenarios), [inputs, scenarios]);
+  const scenarioResult = useMemo(() => calculateWage(scenarioInputs), [scenarioInputs]);
+  const scenarioDelta = scenarioResult.realHourlyWage - result.realHourlyWage;
+
+  const activeItems = CATALOG.find((c) => c.id === activeCategory)?.items ?? [];
 
   const purchaseTranslation = useMemo(
     () => (purchaseCost > 0 ? translateCost(purchaseCost, result.realHourlyWage) : null),
@@ -470,9 +495,7 @@ function Result({
             <span className="font-display font-light text-7xl md:text-9xl tracking-tightest text-blood tabular">
               {formatCurrencyPrecise(result.realHourlyWage)}
             </span>
-            <span className="font-display italic text-2xl md:text-3xl text-mute">
-              per hour
-            </span>
+            <span className="font-display italic text-2xl md:text-3xl text-mute">per hour</span>
           </div>
         </div>
 
@@ -489,7 +512,7 @@ function Result({
         </p>
       </div>
 
-      {/* THE BREAKDOWN */}
+      {/* BREAKDOWN */}
       <section className="reveal reveal-delay-3 mb-20 border-t border-ink/10 pt-12">
         <h2 className="font-display font-light text-3xl md:text-4xl mb-10 tracking-tightest">
           Where it went
@@ -497,155 +520,118 @@ function Result({
 
         <div className="grid md:grid-cols-2 gap-x-16 gap-y-10">
           <div>
-            <h3 className="font-mono text-xs uppercase tracking-widest text-mute mb-4">
-              Money side
-            </h3>
+            <h3 className="font-mono text-xs uppercase tracking-widest text-mute mb-4">Money side</h3>
             <div className="space-y-3 font-body text-lg">
               <LineItem label="Gross salary" value={formatCurrency(result.grossAnnual)} />
-              <LineItem
-                label="Federal tax"
-                value={`− ${formatCurrency(result.breakdown.taxes.federal)}`}
-                sub
-              />
-              <LineItem
-                label="FICA (SS + Medicare)"
-                value={`− ${formatCurrency(result.breakdown.taxes.fica)}`}
-                sub
-              />
-              <LineItem
-                label="State tax"
-                value={`− ${formatCurrency(result.breakdown.taxes.state)}`}
-                sub
-              />
+              <LineItem label="Federal tax" value={`− ${formatCurrency(result.breakdown.taxes.federal)}`} sub />
+              <LineItem label="FICA (SS + Medicare)" value={`− ${formatCurrency(result.breakdown.taxes.fica)}`} sub />
+              <LineItem label="State tax" value={`− ${formatCurrency(result.breakdown.taxes.state)}`} sub />
               <div className="border-t border-ink/10 pt-3">
                 <LineItem label="Take-home pay" value={formatCurrency(result.netAnnual)} bold />
               </div>
               {result.breakdown.jobCosts.commute > 0 && (
-                <LineItem
-                  label="Commute costs"
-                  value={`− ${formatCurrency(result.breakdown.jobCosts.commute)}`}
-                  sub
-                />
+                <LineItem label="Commute costs" value={`− ${formatCurrency(result.breakdown.jobCosts.commute)}`} sub />
               )}
               {result.breakdown.jobCosts.lunches > 0 && (
-                <LineItem
-                  label="Work lunches"
-                  value={`− ${formatCurrency(result.breakdown.jobCosts.lunches)}`}
-                  sub
-                />
+                <LineItem label="Work lunches" value={`− ${formatCurrency(result.breakdown.jobCosts.lunches)}`} sub />
               )}
               {result.breakdown.jobCosts.coffeeSnacks > 0 && (
-                <LineItem
-                  label="Coffee / snacks / drinks"
-                  value={`− ${formatCurrency(result.breakdown.jobCosts.coffeeSnacks)}`}
-                  sub
-                />
+                <LineItem label="Coffee / snacks / drinks" value={`− ${formatCurrency(result.breakdown.jobCosts.coffeeSnacks)}`} sub />
               )}
               {result.breakdown.jobCosts.clothing > 0 && (
-                <LineItem
-                  label="Work clothing"
-                  value={`− ${formatCurrency(result.breakdown.jobCosts.clothing)}`}
-                  sub
-                />
+                <LineItem label="Work clothing" value={`− ${formatCurrency(result.breakdown.jobCosts.clothing)}`} sub />
               )}
               {result.breakdown.jobCosts.childcare > 0 && (
-                <LineItem
-                  label="Job-enabling childcare"
-                  value={`− ${formatCurrency(result.breakdown.jobCosts.childcare)}`}
-                  sub
-                />
+                <LineItem label="Job-enabling childcare" value={`− ${formatCurrency(result.breakdown.jobCosts.childcare)}`} sub />
               )}
               <div className="border-t-2 border-ink pt-3 mt-3">
-                <LineItem
-                  label="What's actually yours"
-                  value={formatCurrency(result.takeHomeAnnual)}
-                  bold
-                  highlight
-                />
+                <LineItem label="What's actually yours" value={formatCurrency(result.takeHomeAnnual)} bold highlight />
               </div>
             </div>
           </div>
 
           <div>
-            <h3 className="font-mono text-xs uppercase tracking-widest text-mute mb-4">
-              Time side
-            </h3>
+            <h3 className="font-mono text-xs uppercase tracking-widest text-mute mb-4">Time side</h3>
             <div className="space-y-3 font-body text-lg">
-              <LineItem
-                label="Official hours / week"
-                value={`${formatNumber(result.workHoursPerWeek, 0)} hrs`}
-              />
+              <LineItem label="Official hours / week" value={`${formatNumber(result.workHoursPerWeek, 0)} hrs`} />
               {result.breakdown.hiddenTime.overtime > 0 && (
-                <LineItem
-                  label="Unpaid overtime"
-                  value={`+ ${formatNumber(result.breakdown.hiddenTime.overtime, 1)} hrs`}
-                  sub
-                />
+                <LineItem label="Unpaid overtime" value={`+ ${formatNumber(result.breakdown.hiddenTime.overtime, 1)} hrs`} sub />
               )}
               {result.breakdown.hiddenTime.commute > 0 && (
-                <LineItem
-                  label="Commute"
-                  value={`+ ${formatNumber(result.breakdown.hiddenTime.commute, 1)} hrs`}
-                  sub
-                />
+                <LineItem label="Commute" value={`+ ${formatNumber(result.breakdown.hiddenTime.commute, 1)} hrs`} sub />
               )}
               {result.breakdown.hiddenTime.prep > 0 && (
-                <LineItem
-                  label="Getting ready"
-                  value={`+ ${formatNumber(result.breakdown.hiddenTime.prep, 1)} hrs`}
-                  sub
-                />
+                <LineItem label="Getting ready" value={`+ ${formatNumber(result.breakdown.hiddenTime.prep, 1)} hrs`} sub />
               )}
               <div className="border-t-2 border-ink pt-3 mt-3">
-                <LineItem
-                  label="Your real work week"
-                  value={`${formatNumber(result.totalHoursPerWeek, 1)} hrs`}
-                  bold
-                  highlight
-                />
+                <LineItem label="Your real work week" value={`${formatNumber(result.totalHoursPerWeek, 1)} hrs`} bold highlight />
               </div>
               <p className="text-sm text-mute italic pt-4">
-                That's {formatNumber(result.hiddenHoursPerWeek, 1)} hours every
-                week you're working and no one's paying you for it.
+                That's {formatNumber(result.hiddenHoursPerWeek, 1)} hours every week you're working and no one's paying you for it.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* TRANSLATIONS */}
+      {/* YEARS-AT-WORK SENTENCE */}
+      {result.yearsUntilRetirement > 0 && (
+        <section className="reveal reveal-delay-3 mb-20 border-t border-ink/10 pt-12">
+          <h2 className="font-display font-light text-3xl md:text-4xl mb-8 tracking-tightest">
+            And one more thing.
+          </h2>
+          <p className="font-display text-2xl md:text-3xl leading-snug tracking-tight text-ink-soft">
+            At this pace, between now and 65, you'll spend{' '}
+            <span className="text-blood font-medium">
+              {formatNumber(result.lifetimeWorkHours / (40 * 50), 1)} years
+            </span>{' '}
+            working &mdash; roughly{' '}
+            <span className="text-blood font-medium">
+              {formatNumber(result.percentOfWakingLifeAtWork, 0)}%
+            </span>{' '}
+            of every waking hour you have left.
+          </p>
+          <p className="font-body italic text-mute text-base mt-4">
+            Calculated from your age ({inputs.age}) and {formatNumber(result.totalHoursPerWeek, 1)}-hour real work week.
+            Assumes 16 waking hours a day.
+          </p>
+        </section>
+      )}
+
+      {/* CATALOG */}
       <section className="reveal reveal-delay-4 mb-20 border-t border-ink/10 pt-12">
         <h2 className="font-display font-light text-3xl md:text-4xl mb-4 tracking-tightest">
           What things <em className="text-blood">really</em> cost you
         </h2>
         <p className="font-body text-lg text-ink-soft mb-10">
-          At {formatCurrencyPrecise(result.realHourlyWage)} an hour, this is
-          what you're actually trading.
+          At {formatCurrencyPrecise(result.realHourlyWage)} an hour, this is what you're actually trading.
+        </p>
+
+        {/* Category tabs */}
+        <div className="flex flex-wrap gap-2 mb-8 border-b border-ink/10 pb-2 overflow-x-auto">
+          {CATALOG.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => setActiveCategory(c.id)}
+              className={`font-mono text-xs uppercase tracking-widest px-3 py-2 border-b-2 -mb-2 whitespace-nowrap transition-colors ${
+                activeCategory === c.id
+                  ? 'text-blood border-blood'
+                  : 'text-mute border-transparent hover:text-ink'
+              }`}
+            >
+              {c.title}
+            </button>
+          ))}
+        </div>
+
+        <p className="font-display italic text-xl text-mute mb-8">
+          {CATALOG.find((c) => c.id === activeCategory)?.subtitle}
         </p>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {PREBAKED_ITEMS.map((item) => {
-            const t = translateCost(item.cost, result.realHourlyWage);
-            if (!t) return null;
-            return (
-              <div
-                key={item.label}
-                className="border border-ink/15 p-6 bg-cream/60 backdrop-blur-sm"
-              >
-                <p className="font-mono text-xs uppercase tracking-widest text-mute mb-2">
-                  {item.label}
-                </p>
-                <p className="font-display text-2xl mb-1 tabular">
-                  {formatCurrency(item.cost)}
-                </p>
-                <p className="font-display italic text-xl text-blood tabular">
-                  = {formatNumber(t.primary.value, t.primary.value < 10 ? 1 : 0)}{' '}
-                  {t.primary.unit}
-                </p>
-                <p className="text-sm text-mute mt-2">{item.note}</p>
-              </div>
-            );
-          })}
+          {activeItems.map((item) => (
+            <CatalogCard key={item.label} item={item} realHourlyWage={result.realHourlyWage} inputs={inputs} />
+          ))}
         </div>
 
         {/* Custom lookup */}
@@ -687,8 +673,7 @@ function Result({
           {purchaseTranslation && purchaseCost > 0 && (
             <div className="mt-8 pt-8 border-t border-cream/15">
               <p className="font-display text-2xl md:text-3xl leading-snug tracking-tightest">
-                {purchaseName ? `That ${purchaseName.toLowerCase()}` : 'That purchase'}{' '}
-                costs you{' '}
+                {purchaseName ? `That ${purchaseName.toLowerCase()}` : 'That purchase'} costs you{' '}
                 <span className="text-gold-light tabular">
                   {formatNumber(
                     purchaseTranslation.primary.value,
@@ -706,6 +691,70 @@ function Result({
             </div>
           )}
         </div>
+      </section>
+
+      {/* SCENARIO TOGGLES */}
+      <section className="reveal reveal-delay-5 mb-20 border-t border-ink/10 pt-12">
+        <h2 className="font-display font-light text-3xl md:text-4xl mb-4 tracking-tightest">
+          What if you <em className="text-blood">changed something</em>?
+        </h2>
+        <p className="font-body text-lg text-ink-soft mb-10">
+          Poke at the number. See what moves it.
+        </p>
+
+        <div className="space-y-4 mb-10">
+          <ScenarioToggle
+            label="If you worked from home"
+            hint="Zero commute, a quarter of the work clothing, ten minutes of prep."
+            active={scenarios.remoteWork}
+            onToggle={() => setScenarios((s) => ({ ...s, remoteWork: !s.remoteWork }))}
+          />
+          <ScenarioToggle
+            label="If you packed lunch every day"
+            hint="No more $15 Chipotle bowls. Cold leftovers from home instead."
+            active={scenarios.packedLunch}
+            onToggle={() => setScenarios((s) => ({ ...s, packedLunch: !s.packedLunch }))}
+          />
+          {bestState.delta > 0 && (
+            <ScenarioToggle
+              label={`If you moved to ${bestState.name}`}
+              hint={`No state income tax. Adds ${formatCurrencyPrecise(bestState.delta)}/hr before anything else.`}
+              active={scenarios.movedState === bestState.code}
+              onToggle={() =>
+                setScenarios((s) => ({
+                  ...s,
+                  movedState: s.movedState === bestState.code ? null : bestState.code,
+                }))
+              }
+            />
+          )}
+        </div>
+
+        {(scenarios.remoteWork || scenarios.packedLunch || scenarios.movedState) && (
+          <div className="bg-cream-dark border border-ink/15 p-6 md:p-8">
+            <p className="font-mono text-xs uppercase tracking-widest text-mute mb-2">
+              With those changes
+            </p>
+            <div className="flex items-baseline flex-wrap gap-x-4 gap-y-2">
+              <span className="font-display font-light text-5xl md:text-6xl tabular text-ink">
+                {formatCurrencyPrecise(scenarioResult.realHourlyWage)}
+              </span>
+              <span className="font-display italic text-xl text-mute">per hour</span>
+              <span
+                className={`font-mono text-base ml-auto ${
+                  scenarioDelta > 0 ? 'text-ink' : 'text-blood'
+                }`}
+              >
+                {scenarioDelta > 0 ? '+' : ''}
+                {formatCurrencyPrecise(scenarioDelta)}/hr
+              </span>
+            </div>
+            <p className="font-body italic text-mute text-sm mt-4">
+              Your real work week would also drop to{' '}
+              {formatNumber(scenarioResult.totalHoursPerWeek, 1)} hours.
+            </p>
+          </div>
+        )}
       </section>
 
       {/* ACTIONS */}
@@ -726,14 +775,76 @@ function Result({
         </div>
 
         <p className="mt-10 font-body text-sm text-mute italic max-w-2xl leading-relaxed">
-          The math uses 2025 US federal tax brackets, state top marginal rates,
-          and FICA. Everything else is what you entered.{' '}
+          The math uses 2025 US federal tax brackets, state top marginal rates, and FICA. Everything else is what you entered.{' '}
           <a href="/methodology" className="underline decoration-blood decoration-2 underline-offset-4 hover:text-ink">
             See how we calculated this.
           </a>
         </p>
       </section>
     </div>
+  );
+}
+
+function CatalogCard({
+  item,
+  realHourlyWage,
+  inputs,
+}: {
+  item: CatalogItem;
+  realHourlyWage: number;
+  inputs: WageInputs;
+}) {
+  // Handle computed items (e.g. "one full year of your salary")
+  const cost = item.computed === 'annualSalary' ? inputs.annualSalary : item.cost;
+  const t = translateCost(cost, realHourlyWage);
+  if (!t) return null;
+
+  return (
+    <div className="border border-ink/15 p-6 bg-cream/60 backdrop-blur-sm hover:border-blood/40 transition-colors">
+      <p className="font-mono text-xs uppercase tracking-widest text-mute mb-2">{item.label}</p>
+      <p className="font-display text-2xl mb-1 tabular">{formatCurrency(cost)}</p>
+      <p className="font-display italic text-xl text-blood tabular">
+        = {formatNumber(t.primary.value, t.primary.value < 10 ? 1 : 0)} {t.primary.unit}
+      </p>
+      <p className="text-sm text-mute mt-2">{item.note}</p>
+    </div>
+  );
+}
+
+function ScenarioToggle({
+  label,
+  hint,
+  active,
+  onToggle,
+}: {
+  label: string;
+  hint: string;
+  active: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      onClick={onToggle}
+      className={`w-full text-left p-6 border-2 transition-colors ${
+        active
+          ? 'border-blood bg-blood/5'
+          : 'border-ink/15 hover:border-ink/40 bg-cream/40'
+      }`}
+    >
+      <div className="flex items-start gap-4">
+        <div
+          className={`mt-1 w-6 h-6 border-2 flex items-center justify-center transition-colors flex-shrink-0 ${
+            active ? 'border-blood bg-blood' : 'border-ink/30'
+          }`}
+        >
+          {active && <span className="text-cream font-mono text-sm">✓</span>}
+        </div>
+        <div>
+          <p className="font-display text-xl tracking-tight">{label}</p>
+          <p className="font-body text-mute italic text-sm mt-1">{hint}</p>
+        </div>
+      </div>
+    </button>
   );
 }
 
@@ -751,28 +862,11 @@ function LineItem({
   highlight?: boolean;
 }) {
   return (
-    <div
-      className={`flex justify-between items-baseline gap-4 ${
-        sub ? 'pl-6 text-mute text-base' : ''
-      }`}
-    >
+    <div className={`flex justify-between items-baseline gap-4 ${sub ? 'pl-6 text-mute text-base' : ''}`}>
       <span className={bold ? 'font-display' : ''}>{label}</span>
-      <span
-        className={`tabular ${
-          highlight ? 'font-display text-blood text-xl' : bold ? 'font-medium' : ''
-        }`}
-      >
+      <span className={`tabular ${highlight ? 'font-display text-blood text-xl' : bold ? 'font-medium' : ''}`}>
         {value}
       </span>
     </div>
   );
 }
-
-const PREBAKED_ITEMS = [
-  { label: 'A fancy coffee', cost: 6.5, note: 'Every morning adds up.' },
-  { label: 'Dinner for two out', cost: 80, note: 'Tip included, wine extra.' },
-  { label: 'A PS5', cost: 500, note: 'Or an XBox. No judgment.' },
-  { label: 'AirPods Pro', cost: 250, note: 'The nice ones with ANC.' },
-  { label: 'A weekend in Miami', cost: 1200, note: 'Flight, hotel, food.' },
-  { label: 'A used Honda Civic', cost: 18000, note: 'Clean title, 60k miles.' },
-];

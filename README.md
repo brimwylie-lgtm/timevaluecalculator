@@ -50,7 +50,8 @@ src/
 │   └── Calculator.tsx      The main interactive wizard + result
 ├── data/
 │   ├── tax.ts              2025 federal/FICA/state tax logic
-│   └── calculator.ts       Real hourly wage computation + cost translation
+│   ├── calculator.ts       Real hourly wage, scenarios, best-state, translation
+│   └── catalog.ts          Categorized catalog of items (~45 across 7 tabs)
 ├── layouts/
 │   └── Base.astro          HTML scaffolding, meta, OG tags
 ├── pages/
@@ -60,6 +61,21 @@ src/
 └── styles/
     └── global.css          Typography, theme, animations
 ```
+
+## What v1.1 added over v1.0
+
+- Age input, so we can compute years-at-work and % of remaining waking life.
+- "And one more thing" section with the years-at-work sentence.
+- Tabbed catalog: 7 categories (Everyday, Nice things, Tech, Trips, Big moves,
+  The big numbers, Just for fun), ~45 items total.
+- "What if you changed something" section with three scenario toggles:
+  remote work, packed lunch, moved to the best no-income-tax state.
+- Scenario recalculation shows a live revised hourly wage + delta.
+
+## Updating catalog prices
+
+Catalog items and prices live in `src/data/catalog.ts`. Edit in place. No
+build-time magic &mdash; just redeploy after editing.
 
 ## Updating tax data
 

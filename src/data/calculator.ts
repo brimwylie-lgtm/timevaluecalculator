@@ -1,10 +1,11 @@
-import { calculateNetIncome, type FilingStatus } from './tax';
+import { calculateNetIncome, STATE_TAX_FLAT, type FilingStatus } from './tax';
 
 export interface WageInputs {
   // Salary
   annualSalary: number;
   state: string;
   filingStatus: FilingStatus;
+  age: number;
 
   // Time (weekly except prep which is daily)
   officialHoursPerWeek: number;
@@ -40,6 +41,11 @@ export interface WageResult {
   jobCostsAnnual: number;
   takeHomeAnnual: number;
 
+  // Life math
+  yearsUntilRetirement: number;
+  lifetimeWorkHours: number;
+  percentOfWakingLifeAtWork: number;
+
   // Detail
   breakdown: {
     taxes: { federal: number; fica: number; state: number };
@@ -58,18 +64,17 @@ export interface WageResult {
   };
 }
 
-const WEEKS_PER_YEAR = 50; // 2 weeks off for vacation/holidays is reasonable default
+const WEEKS_PER_YEAR = 50;
+const RETIREMENT_AGE = 65;
+const WAKING_HOURS_PER_WEEK = 7 * 16;
 
 export function calculateWage(inputs: WageInputs): WageResult {
-  // Tax calculation
   const tax = calculateNetIncome(inputs.annualSalary, inputs.filingStatus, inputs.state);
 
-  // Weekly job costs
   const commuteWeekly = inputs.commuteCostPerWeek;
   const lunchesWeekly = inputs.lunchesPerWeek * inputs.avgLunchCost;
   const coffeeSnacksWeekly = inputs.coffeeSnacksPerWeek;
 
-  // Annualize
   const commuteAnnual = commuteWeekly * WEEKS_PER_YEAR;
   const lunchesAnnual = lunchesWeekly * WEEKS_PER_YEAR;
   const coffeeSnacksAnnual = coffeeSnacksWeekly * WEEKS_PER_YEAR;
@@ -79,7 +84,6 @@ export function calculateWage(inputs: WageInputs): WageResult {
   const jobCostsAnnual =
     commuteAnnual + lunchesAnnual + coffeeSnacksAnnual + clothingAnnual + childcareAnnual;
 
-  // Weekly time breakdown
   const commuteHoursWeekly = (inputs.commuteMinutesOneWay * 2 * inputs.daysPerWeek) / 60;
   const prepHoursWeekly = (inputs.prepMinutesPerDay * inputs.daysPerWeek) / 60;
   const overtimeHoursWeekly = inputs.overtimeHoursPerWeek;
@@ -87,7 +91,6 @@ export function calculateWage(inputs: WageInputs): WageResult {
   const hiddenHoursPerWeek = commuteHoursWeekly + prepHoursWeekly + overtimeHoursWeekly;
   const totalHoursPerWeek = inputs.officialHoursPerWeek + hiddenHoursPerWeek;
 
-  // The two wages
   const naiveHourlyWage =
     inputs.officialHoursPerWeek > 0
       ? inputs.annualSalary / (inputs.officialHoursPerWeek * WEEKS_PER_YEAR)
@@ -99,6 +102,14 @@ export function calculateWage(inputs: WageInputs): WageResult {
 
   const percentDrop =
     naiveHourlyWage > 0 ? ((naiveHourlyWage - realHourlyWage) / naiveHourlyWage) * 100 : 0;
+
+  const yearsUntilRetirement = Math.max(0, RETIREMENT_AGE - inputs.age);
+  const lifetimeWorkHours = totalHoursAnnual * yearsUntilRetirement;
+  const totalWakingHoursUntilRetirement = WAKING_HOURS_PER_WEEK * 52 * yearsUntilRetirement;
+  const percentOfWakingLifeAtWork =
+    totalWakingHoursUntilRetirement > 0
+      ? (lifetimeWorkHours / totalWakingHoursUntilRetirement) * 100
+      : 0;
 
   return {
     naiveHourlyWage,
@@ -112,6 +123,9 @@ export function calculateWage(inputs: WageInputs): WageResult {
     netAnnual: tax.net,
     jobCostsAnnual,
     takeHomeAnnual,
+    yearsUntilRetirement,
+    lifetimeWorkHours,
+    percentOfWakingLifeAtWork,
     breakdown: {
       taxes: { federal: tax.federal, fica: tax.fica, state: tax.state },
       jobCosts: {
@@ -130,16 +144,56 @@ export function calculateWage(inputs: WageInputs): WageResult {
   };
 }
 
-// Translate a dollar amount into "hours/days/weeks of your life"
+export interface Scenarios {
+  remoteWork: boolean;
+  packedLunch: boolean;
+  movedState: string | null;
+}
+
+export function applyScenarios(inputs: WageInputs, scenarios: Scenarios): WageInputs {
+  const next = { ...inputs };
+  if (scenarios.remoteWork) {
+    next.commuteCostPerWeek = 0;
+    next.commuteMinutesOneWay = 0;
+    next.prepMinutesPerDay = Math.min(next.prepMinutesPerDay, 10);
+    next.workClothingPerMonth = Math.floor(next.workClothingPerMonth * 0.25);
+  }
+  if (scenarios.packedLunch) {
+    next.lunchesPerWeek = 0;
+    next.avgLunchCost = 0;
+  }
+  if (scenarios.movedState) {
+    next.state = scenarios.movedState;
+  }
+  return next;
+}
+
+// Find a no-income-tax state that gives the biggest real wage boost.
+// Used for the "if you moved to X" suggestion.
+export function findBestState(inputs: WageInputs): { code: string; name: string; delta: number } {
+  const base = calculateWage(inputs).realHourlyWage;
+  let best = { code: inputs.state, name: STATE_TAX_FLAT[inputs.state]?.name ?? '', delta: 0 };
+  for (const [code, { rate, name }] of Object.entries(STATE_TAX_FLAT)) {
+    if (rate !== 0) continue;
+    if (code === inputs.state) continue;
+    const alt = calculateWage({ ...inputs, state: code }).realHourlyWage;
+    const delta = alt - base;
+    if (delta > best.delta) {
+      best = { code, name, delta };
+    }
+  }
+  return best;
+}
+
 export function translateCost(dollarAmount: number, realHourlyWage: number) {
   if (realHourlyWage <= 0) return null;
 
   const hours = dollarAmount / realHourlyWage;
-  const workDays = hours / 8; // assume 8-hour workday for this comparison
+  const workDays = hours / 8;
   const workWeeks = hours / 40;
   const workMonths = hours / 160;
+  const workYears = hours / (40 * 50);
 
-  // Pick the most impactful unit
   let primary: { value: number; unit: string };
   if (hours < 1) {
     primary = { value: hours * 60, unit: 'minutes' };
@@ -149,8 +203,10 @@ export function translateCost(dollarAmount: number, realHourlyWage: number) {
     primary = { value: workDays, unit: 'work days' };
   } else if (hours < 160) {
     primary = { value: workWeeks, unit: 'work weeks' };
-  } else {
+  } else if (hours < 40 * 50) {
     primary = { value: workMonths, unit: 'work months' };
+  } else {
+    primary = { value: workYears, unit: 'work years' };
   }
 
   return {
@@ -158,6 +214,7 @@ export function translateCost(dollarAmount: number, realHourlyWage: number) {
     workDays,
     workWeeks,
     workMonths,
+    workYears,
     primary,
   };
 }
