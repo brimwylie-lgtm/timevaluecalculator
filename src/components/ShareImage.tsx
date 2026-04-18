@@ -188,7 +188,7 @@ function renderCanvas(canvas: HTMLCanvasElement, d: RenderData) {
   ctx.fillText('A CALCULATOR / VOL. 001', 80, 75);
 
   ctx.textAlign = 'right';
-  ctx.fillText('WHATSMYTIMEWORTH.COM', W - 80, 75);
+  ctx.fillText('AFTERWAGE.COM', W - 80, 75);
 
   // Eyebrow
   ctx.fillStyle = MUTE;
@@ -254,7 +254,7 @@ function renderCanvas(canvas: HTMLCanvasElement, d: RenderData) {
 
   ctx.fillStyle = INK;
   ctx.font = 'italic 300 56px "Fraunces", Georgia, serif';
-  ctx.fillText('whatsmytimeworth.com', W - 80, footerY + 78);
+  ctx.fillText('afterwage.com', W - 80, footerY + 78);
 
   // Bottom rule
   ctx.textAlign = 'left';
@@ -269,7 +269,7 @@ function renderCanvas(canvas: HTMLCanvasElement, d: RenderData) {
   ctx.fillStyle = MUTE;
   ctx.font = 'italic 400 24px "Newsreader", Georgia, serif';
   ctx.textAlign = 'center';
-  ctx.fillText('Your salary tells you what your time is worth. It\'s lying.', W / 2, H - 25);
+  ctx.fillText('Your wage, after everything.', W / 2, H - 25);
 }
 
 function drawSoftVignette(ctx: CanvasRenderingContext2D) {

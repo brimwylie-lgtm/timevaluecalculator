@@ -13,7 +13,7 @@ export default function PurchaseShareButtons({
   purchaseCost,
   primaryValue,
   primaryUnit,
-  siteUrl = 'https://whatsmytimeworth.com',
+  siteUrl = 'https://afterwage.com',
 }: Props) {
   const [hasNativeShare, setHasNativeShare] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -47,7 +47,7 @@ export default function PurchaseShareButtons({
   const nativeShare = async () => {
     try {
       await navigator.share({
-        title: "What's My Time Worth",
+        title: 'AfterWage',
         text: shareText,
         url: siteUrl,
       });

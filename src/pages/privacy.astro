@@ -1,14 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import Logo from '../components/Logo.astro';
 ---
 
 <Base
-  title="Privacy Policy — What's My Time Worth"
+  title="Privacy Policy — AfterWage"
   description="What data this calculator collects (mostly nothing), how Google Analytics and AdSense are used, and how to opt out of tracking."
 >
   <main class="max-w-3xl mx-auto px-6 py-16 md:py-24">
-    <a href="/" class="font-mono text-xs uppercase tracking-widest text-mute hover:text-blood">
+    <a href="/" class="inline-block mb-10 hover:opacity-70 transition-opacity">
+      <Logo variant="compact" size={32} />
+    </a>
+
+    <a href="/" class="block font-mono text-xs uppercase tracking-widest text-mute hover:text-blood">
       &larr; Back to the calculator
     </a>
 

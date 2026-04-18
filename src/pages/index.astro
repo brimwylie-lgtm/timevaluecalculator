@@ -1,15 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
 import Calculator from '../components/Calculator';
+import Logo from '../components/Logo.astro';
 import { HOMEPAGE_FAQS } from '../data/faq';
 
-const siteUrl = Astro.site?.toString() ?? 'https://whatsmytimeworth.com';
+const siteUrl = Astro.site?.toString() ?? 'https://afterwage.com';
 
 // JSON-LD: WebApplication schema (tells Google this is a tool)
 const webAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
-  name: "What's My Time Worth",
+  name: 'AfterWage',
+  alternateName: "What's My Time Worth",
   description:
     'A free true hourly wage calculator that shows your real take-home pay per hour of your life, after taxes, commute, lunches, and every hidden cost of working.',
   url: siteUrl,
@@ -22,7 +24,7 @@ const webAppSchema = {
   },
   creator: {
     '@type': 'Organization',
-    name: "What's My Time Worth",
+    name: 'AfterWage',
   },
 };
 
@@ -42,9 +44,9 @@ const faqSchema = {
 ---
 
 <Base
-  title="Real Hourly Wage Calculator — What's My Time Worth"
+  title="AfterWage — Real Hourly Wage Calculator"
   description="Free true hourly wage calculator. See your real take-home pay per hour after federal and state taxes, FICA, commute, lunches, childcare, and unpaid overtime. Find out what you can actually afford on your salary."
-  keywords="real hourly wage calculator, true hourly wage calculator, take home pay calculator, salary to hourly calculator after taxes, real wage calculator, affordability calculator, what is my salary really worth, hidden cost of working, your money or your life calculator, cost of living after taxes"
+  keywords="afterwage, real hourly wage calculator, true hourly wage calculator, take home pay calculator, salary to hourly calculator after taxes, real wage calculator, affordability calculator, what is my salary really worth, hidden cost of working, your money or your life calculator, cost of living after taxes"
   structuredData={[webAppSchema, faqSchema]}
 >
   <main>
@@ -173,10 +175,10 @@ const faqSchema = {
   <footer class="relative z-10 border-t border-ink/10 py-16">
     <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row md:items-end justify-between gap-8">
       <div>
-        <p class="font-display text-2xl tracking-tightest mb-2">What's My Time Worth</p>
-        <p class="font-body italic text-mute max-w-md">
+        <Logo variant="full" size={100} />
+        <p class="font-body italic text-mute max-w-md mt-6">
           Based on the "real hourly wage" concept from <em>Your Money or Your Life</em>
-          (Vicki Robin & Joe Dominguez, 1992). No affiliation.
+          (Vicki Robin &amp; Joe Dominguez, 1992). No affiliation.
         </p>
       </div>
       <nav class="flex gap-6 font-mono text-xs uppercase tracking-widest flex-wrap">

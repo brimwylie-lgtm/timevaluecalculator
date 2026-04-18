@@ -19,7 +19,7 @@ const {
 
 const ogTitle = title;
 const ogDescription = description;
-const siteUrl = Astro.site?.toString() ?? 'https://whatsmytimeworth.com';
+const siteUrl = Astro.site?.toString() ?? 'https://afterwage.com';
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
 
 const schemas = structuredData
@@ -46,7 +46,7 @@ const schemas = structuredData
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={ogDescription} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:site_name" content="What's My Time Worth" />
+    <meta property="og:site_name" content="AfterWage" />
     <meta property="og:image" content={new URL('/og-image.png', siteUrl).toString()} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />

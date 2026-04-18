@@ -1,15 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import Logo from '../components/Logo.astro';
 ---
 
 <Base
-  title="About the Real Hourly Wage Calculator — What's My Time Worth"
+  title="About AfterWage — The Real Hourly Wage Calculator"
   description="A free, no-signup true hourly wage calculator based on the Your Money or Your Life concept. Find out what you can really afford on your salary after the full cost of working."
   keywords="your money or your life calculator, real hourly wage tool, free wage calculator no signup"
 >
   <main class="max-w-2xl mx-auto px-6 py-16 md:py-24">
-    <a href="/" class="font-mono text-xs uppercase tracking-widest text-mute hover:text-blood">
+    <a href="/" class="inline-block mb-10 hover:opacity-70 transition-opacity">
+      <Logo variant="compact" size={32} />
+    </a>
+
+    <a href="/" class="block font-mono text-xs uppercase tracking-widest text-mute hover:text-blood">
       &larr; Back to the calculator
     </a>
 

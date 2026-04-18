@@ -9,5 +9,5 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
   ],
-  site: 'https://whatsmytimeworth.com',
+  site: 'https://afterwage.com',
 });

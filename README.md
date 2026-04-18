@@ -83,6 +83,38 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v1.7 added over v1.6
+
+**The AfterWage rebrand.** The whole project is now branded as **AfterWage**
+(afterwage.com), with "what's my time worth?" as the tagline.
+
+Changes:
+- New `Logo.astro` component in `[After] Wage` bracket treatment — Fraunces
+  serif body + JetBrains Mono brackets. Variants: full (lockup with tagline),
+  compact (inline), mark ([a] favicon).
+- New favicon in `public/favicon.svg` using the `[a]` bracket mark.
+- Homepage footer rebuilt around the full AfterWage lockup (replaces old
+  text-only "What's My Time Worth" brand line).
+- Compact logo added to the top of every subpage: methodology, about,
+  privacy, terms, contact. Every page now has brand presence.
+- `SiteFooter` rebuilt with compact logo as the home-link anchor.
+- Share image (`ShareImage.tsx`) updated: top-right watermark now
+  AFTERWAGE.COM; bottom-right URL now afterwage.com; bottom tagline changed
+  to "Your wage, after everything."
+- New `public/og-image.png` (1200x630 @ 2x density) — matches the masthead
+  logo aesthetic. Used for all social-platform link previews.
+- All meta titles updated to lead with AfterWage brand: "AfterWage — Real
+  Hourly Wage Calculator", "Privacy Policy — AfterWage", etc.
+- Homepage schema includes `alternateName: "What's My Time Worth"` to
+  preserve entity continuity if the old name accrued any early mentions.
+- Every hardcoded URL reference updated: astro.config.mjs, Base.astro meta
+  fallback, robots.txt sitemap, ShareImage watermarks, PurchaseShareButtons
+  default siteUrl, Calculator copyShareText.
+- Site-wide brand keyword "afterwage" added to homepage meta keywords.
+
+**To regenerate the OG image** after visual tweaks, the render script
+lives at `/home/claude/render-og.js` (requires Playwright).
+
 ## What v1.6 added over v1.5
 
 - `/contact` page with a Tally-hosted popup form (form ID `ja90KQ`). Spam

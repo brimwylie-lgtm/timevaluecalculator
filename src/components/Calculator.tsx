@@ -480,7 +480,7 @@ function Result({
   );
 
   const copyShareText = () => {
-    const text = `I thought I made ${formatCurrencyPrecise(result.naiveHourlyWage)}/hr. My real hourly wage is ${formatCurrencyPrecise(result.realHourlyWage)}. Find yours: whatsmytimeworth.com`;
+    const text = `I thought I made ${formatCurrencyPrecise(result.naiveHourlyWage)}/hr. My real hourly wage is ${formatCurrencyPrecise(result.realHourlyWage)}. Find yours: afterwage.com`;
     navigator.clipboard?.writeText(text);
   };
 

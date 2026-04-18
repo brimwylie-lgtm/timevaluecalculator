@@ -1,14 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import Logo from '../components/Logo.astro';
 ---
 
 <Base
-  title="Terms & Conditions — What's My Time Worth"
+  title="Terms &amp; Conditions — AfterWage"
   description="The terms under which this calculator is offered. Plain-language version of the standard disclaimers."
 >
   <main class="max-w-3xl mx-auto px-6 py-16 md:py-24">
-    <a href="/" class="font-mono text-xs uppercase tracking-widest text-mute hover:text-blood">
+    <a href="/" class="inline-block mb-10 hover:opacity-70 transition-opacity">
+      <Logo variant="compact" size={32} />
+    </a>
+
+    <a href="/" class="block font-mono text-xs uppercase tracking-widest text-mute hover:text-blood">
       &larr; Back to the calculator
     </a>
 
