@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://afterwage.com/sitemap.xml
+# AdSense crawler needs access to determine ad relevance
+User-agent: Mediapartners-Google
+Allow: /
+
+Sitemap: https://afterwage.com/sitemap-index.xml

@@ -83,6 +83,13 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v1.8.1 added over v1.8
+
+- Fixed `robots.txt` sitemap URL from `/sitemap.xml` to `/sitemap-index.xml`
+  (correct path that Astro's sitemap integration generates).
+- Added `Mediapartners-Google` crawler directive to `robots.txt` so AdSense
+  can crawl pages to determine ad relevance.
+
 ## What v1.8 added over v1.7
 
 - **Logo fixes.** The full variant's viewBox was too narrow, causing "Wage"
