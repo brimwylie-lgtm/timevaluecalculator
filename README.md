@@ -72,6 +72,29 @@ src/
   remote work, packed lunch, moved to the best no-income-tax state.
 - Scenario recalculation shows a live revised hourly wage + delta.
 
+## What v1.2 added over v1.1
+
+- Canvas-based share image generator: 1080x1080 PNG with the user's real
+  hourly wage, delta, real work week, and brand mark. Lives in
+  `src/components/ShareImage.tsx`.
+- Download and clipboard-copy actions. On browsers that support it, "Copy to
+  clipboard" lets users paste the image directly into Twitter/WhatsApp/etc.
+  without saving to disk.
+- Matches site aesthetic (cream, serif, blood-red accent) so branding is
+  consistent from feed to landing page.
+
+## Still to do
+
+- **Open Graph preview image.** When someone pastes the site URL into
+  Twitter/Facebook, they currently see no preview image. You want a generic
+  1200x630 PNG at `/public/og-image.png` referenced from `Base.astro`. Can
+  be generated once with a headless browser or designed in Figma; it's not
+  user-specific so it's not computed at runtime.
+- **Self-hosted fonts.** Currently loads Fraunces/Newsreader/JetBrains Mono
+  from Google Fonts. Self-host for performance and GDPR cleanliness.
+- **"Compare with a friend" mode.** Second salary input on the result page,
+  side-by-side numbers.
+
 ## Updating catalog prices
 
 Catalog items and prices live in `src/data/catalog.ts`. Edit in place. No

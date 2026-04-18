@@ -12,6 +12,7 @@ import {
 } from '../data/calculator';
 import { STATE_TAX_FLAT } from '../data/tax';
 import { CATALOG, type CatalogItem } from '../data/catalog';
+import ShareImage from './ShareImage';
 
 const DEFAULT_INPUTS: WageInputs = {
   annualSalary: 75000,
@@ -757,11 +758,28 @@ function Result({
         )}
       </section>
 
+      {/* SHARE */}
+      <section className="reveal reveal-delay-5 border-t border-ink/10 pt-12 mb-12">
+        <h2 className="font-display font-light text-3xl md:text-4xl mb-4 tracking-tightest">
+          Share the number
+        </h2>
+        <p className="font-body text-lg text-ink-soft mb-8">
+          Put it in the group chat. Post it on LinkedIn. Ruin someone's Monday.
+        </p>
+
+        <ShareImage
+          realHourlyWage={result.realHourlyWage}
+          naiveHourlyWage={result.naiveHourlyWage}
+          percentDrop={result.percentDrop}
+          totalHoursPerWeek={result.totalHoursPerWeek}
+        />
+      </section>
+
       {/* ACTIONS */}
-      <section className="reveal reveal-delay-5 border-t border-ink/10 pt-12">
+      <section className="border-t border-ink/10 pt-12">
         <div className="flex flex-wrap gap-4 items-center">
-          <button onClick={copyShareText} className="btn-primary">
-            Copy & share
+          <button onClick={copyShareText} className="btn-secondary">
+            Copy text only
           </button>
           <button onClick={onEdit} className="btn-secondary">
             Edit inputs
