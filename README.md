@@ -83,6 +83,34 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v1.3 added over v1.2
+
+- SEO-expanded homepage: keyword-aware body copy below the calculator, plus an
+  8-question FAQ section. Keywords include "real hourly wage calculator,"
+  "true hourly wage calculator," "take-home pay calculator," "salary to
+  hourly calculator after taxes," "affordability," and "hidden cost of
+  working."
+- JSON-LD structured data: `WebApplication` schema tells Google what the tool
+  is; `FAQPage` schema enables rich snippets in search results.
+- Upgraded meta tags on all three pages with keyword-targeted titles and
+  descriptions.
+- `og:image` tag references `/og-image.png` (see below — you need to create
+  this before launch).
+- Fixed AdSense URL (was pointing at wrong hostname in v1.0-v1.2).
+
+## Before launch checklist
+
+- [ ] Create `/public/og-image.png` at 1200×630. This is the preview card
+      that shows when the URL is pasted into Twitter, Slack, iMessage, etc.
+      Without it, links unfurl without an image. Easy to design in Figma or
+      generate from the share image component.
+- [ ] Decide on domain, update `astro.config.mjs` site URL, update hardcoded
+      "WHATSMYTIMEWORTH.COM" references in `ShareImage.tsx` (appears 3x) and
+      in the `copyShareText` function in `Calculator.tsx`.
+- [ ] Verify in Google Search Console after deploy.
+- [ ] Submit sitemap at `/sitemap.xml` (Astro can generate this — run
+      `npx astro add sitemap` if you want it).
+
 ## Still to do
 
 - **Open Graph preview image.** When someone pastes the site URL into

@@ -5,18 +5,28 @@ export interface Props {
   title: string;
   description?: string;
   canonical?: string;
+  keywords?: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
   title,
-  description = 'Your salary tells you what your time is worth. It\'s lying. Find out your real hourly wage, after taxes, commute, and every hidden cost of going to work.',
+  description = 'Find out your real hourly wage after taxes, commute, work lunches, and every hidden cost of going to work. A free true hourly wage calculator that reveals what you can actually afford to live on.',
   canonical,
+  keywords,
+  structuredData,
 } = Astro.props;
 
 const ogTitle = title;
 const ogDescription = description;
 const siteUrl = Astro.site?.toString() ?? 'https://whatsmytimeworth.com';
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
+
+const schemas = structuredData
+  ? Array.isArray(structuredData)
+    ? structuredData
+    : [structuredData]
+  : [];
 ---
 
 <!doctype html>
@@ -28,6 +38,7 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString(
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {keywords && <meta name="keywords" content={keywords} />}
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- Open Graph -->
@@ -36,17 +47,26 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString(
     <meta property="og:description" content={ogDescription} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content="What's My Time Worth" />
+    <meta property="og:image" content={new URL('/og-image.png', siteUrl).toString()} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={ogTitle} />
     <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={new URL('/og-image.png', siteUrl).toString()} />
 
     <!-- Theme -->
     <meta name="theme-color" content="#F5F1E8" />
 
+    <!-- Structured data (JSON-LD) -->
+    {schemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
+
     <!-- AdSense placeholder: uncomment and fill in client ID when ready -->
-    <!-- <script async src="https://pagead2.googlesystemcontent.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
   </head>
   <body>
     <slot />

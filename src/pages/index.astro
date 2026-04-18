@@ -1,17 +1,176 @@
 ---
 import Base from '../layouts/Base.astro';
 import Calculator from '../components/Calculator';
+import { HOMEPAGE_FAQS } from '../data/faq';
+
+const siteUrl = Astro.site?.toString() ?? 'https://whatsmytimeworth.com';
+
+// JSON-LD: WebApplication schema (tells Google this is a tool)
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: "What's My Time Worth",
+  description:
+    'A free true hourly wage calculator that shows your real take-home pay per hour of your life, after taxes, commute, lunches, and every hidden cost of working.',
+  url: siteUrl,
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Any (web)',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  creator: {
+    '@type': 'Organization',
+    name: "What's My Time Worth",
+  },
+};
+
+// JSON-LD: FAQPage schema (gives us rich snippets in search)
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: HOMEPAGE_FAQS.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
 ---
 
 <Base
-  title="What's My Time Worth? — The real hourly wage calculator"
-  description="Your salary tells you what your time is worth. It's lying. Find out your real hourly wage after taxes, commute, and every hidden cost of going to work."
+  title="Real Hourly Wage Calculator — What's My Time Worth"
+  description="Free true hourly wage calculator. See your real take-home pay per hour after federal and state taxes, FICA, commute, lunches, childcare, and unpaid overtime. Find out what you can actually afford on your salary."
+  keywords="real hourly wage calculator, true hourly wage calculator, take home pay calculator, salary to hourly calculator after taxes, real wage calculator, affordability calculator, what is my salary really worth, hidden cost of working, your money or your life calculator, cost of living after taxes"
+  structuredData={[webAppSchema, faqSchema]}
 >
   <main>
     <Calculator client:load />
   </main>
 
-  <footer class="relative z-10 mt-32 border-t border-ink/10 py-16">
+  <!-- SEO expansion: lives below the calculator so it doesn't dilute the emotional intro -->
+  <section class="relative z-10 border-t border-ink/10 py-20 md:py-28">
+    <div class="max-w-3xl mx-auto px-6">
+      <p class="font-mono text-xs uppercase tracking-widest text-mute mb-6">
+        More about this calculator
+      </p>
+
+      <h2 class="font-display font-light text-4xl md:text-5xl tracking-tightest leading-tight mb-10">
+        A true hourly wage calculator that subtracts the hidden cost of working.
+      </h2>
+
+      <div class="space-y-6 font-body text-lg leading-relaxed text-ink-soft">
+        <p>
+          Most salary-to-hourly calculators do one thing: divide your annual
+          pay by 2,080 hours and call it a day. They do not subtract the
+          federal and state taxes that will come out of your paycheck. They do
+          not account for FICA or the additional Medicare surcharge. They
+          ignore the commute you do not get paid for, the work lunches you
+          eat because you are at the office, the professional clothing you
+          own only for the job, or the childcare you need only because you
+          work. And they assume a forty-hour week — as if the unpaid overtime
+          you put in every Sunday evening does not count.
+        </p>
+
+        <p>
+          This tool does something different. It calculates your <strong>real
+          hourly wage</strong>: what you actually take home per hour of your
+          life that work consumes, after everything. Federal and state
+          income tax. FICA. The commute. The lunches. The coffee. The
+          clothing. The childcare. The unpaid hours. What is left, divided
+          by the hours you are really spending, is your real hourly rate.
+          For most people, it is thirty to fifty percent lower than the
+          number on their offer letter.
+        </p>
+
+        <p>
+          The concept is not new. Vicki Robin and Joe Dominguez introduced
+          it in <em>Your Money or Your Life</em> in 1992. It is the
+          clearest way to answer a question most affordability calculators
+          get wrong: what can you <em>really</em> afford on this salary,
+          once the full cost of earning it is counted? A $6 coffee does not
+          cost $6. It costs however many minutes of your life it takes to
+          earn $6 after the full tax and time drag of your job. A $1,800
+          couch does not cost $1,800. It costs a specific number of hours
+          of your life.
+        </p>
+
+        <p>
+          The calculator above does that math for you. It uses current 2025
+          US federal tax brackets, FICA rates including the wage base and
+          additional Medicare surcharge, and state income tax rates for
+          every state and DC. It asks you thirteen questions about your
+          salary, your real hours, and your job-related spending. It gives
+          you one uncomfortable number, a breakdown of where your time and
+          money actually go, and a catalog that translates common purchases
+          into the hours of your life they cost you.
+        </p>
+
+        <p>
+          Nothing is saved. No email is required. Run the numbers, see
+          what your time is actually worth, and decide what to do with that
+          information.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="relative z-10 border-t border-ink/10 py-20 md:py-28">
+    <div class="max-w-3xl mx-auto px-6">
+      <p class="font-mono text-xs uppercase tracking-widest text-mute mb-6">
+        Frequently asked questions
+      </p>
+
+      <h2 class="font-display font-light text-4xl md:text-5xl tracking-tightest leading-tight mb-12">
+        The answers to questions people actually ask.
+      </h2>
+
+      <div class="space-y-10">
+        {HOMEPAGE_FAQS.map((faq) => (
+          <article>
+            <h3 class="font-display font-light text-2xl md:text-3xl tracking-tight mb-4 text-ink">
+              {faq.question}
+            </h3>
+            <p class="font-body text-lg leading-relaxed text-ink-soft">
+              {faq.answer}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Related searches / internal link block -->
+  <section class="relative z-10 border-t border-ink/10 py-16">
+    <div class="max-w-3xl mx-auto px-6">
+      <p class="font-mono text-xs uppercase tracking-widest text-mute mb-4">
+        Related
+      </p>
+      <h2 class="font-display font-light text-2xl md:text-3xl tracking-tight mb-6">
+        Also useful
+      </h2>
+      <ul class="space-y-2 font-body text-lg text-ink-soft">
+        <li>
+          <a href="/methodology" class="underline decoration-blood/40 decoration-2 underline-offset-4 hover:decoration-blood hover:text-ink">
+            How the real hourly wage calculation works
+          </a>
+          &nbsp;— the math, the sources, and what we deliberately leave out.
+        </li>
+        <li>
+          <a href="/about" class="underline decoration-blood/40 decoration-2 underline-offset-4 hover:decoration-blood hover:text-ink">
+            About this calculator
+          </a>
+          &nbsp;— a small tool for a big idea.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="relative z-10 border-t border-ink/10 py-16">
     <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row md:items-end justify-between gap-8">
       <div>
         <p class="font-display text-2xl tracking-tightest mb-2">What's My Time Worth</p>
