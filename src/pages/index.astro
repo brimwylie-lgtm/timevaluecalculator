@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import Calculator from '../components/Calculator';
+---
+
+<Base
+  title="What's My Time Worth? — The real hourly wage calculator"
+  description="Your salary tells you what your time is worth. It's lying. Find out your real hourly wage after taxes, commute, and every hidden cost of going to work."
+>
+  <main>
+    <Calculator client:load />
+  </main>
+
+  <footer class="relative z-10 mt-32 border-t border-ink/10 py-16">
+    <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row md:items-end justify-between gap-8">
+      <div>
+        <p class="font-display text-2xl tracking-tightest mb-2">What's My Time Worth</p>
+        <p class="font-body italic text-mute max-w-md">
+          Based on the "real hourly wage" concept from <em>Your Money or Your Life</em>
+          (Vicki Robin & Joe Dominguez, 1992). No affiliation.
+        </p>
+      </div>
+      <nav class="flex gap-6 font-mono text-xs uppercase tracking-widest">
+        <a href="/methodology" class="hover:text-blood">Methodology</a>
+        <a href="/about" class="hover:text-blood">About</a>
+      </nav>
+    </div>
+  </footer>
+</Base>

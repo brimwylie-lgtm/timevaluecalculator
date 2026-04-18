@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background: #F5F1E8;
+    color: #1A1A1A;
+    font-family: 'Newsreader', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: 'ss01', 'ss02';
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at top left, rgba(184, 137, 92, 0.06), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(139, 46, 31, 0.04), transparent 50%),
+      #F5F1E8;
+    min-height: 100vh;
+  }
+
+  /* Subtle paper texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.6;
+    z-index: 1;
+    mix-blend-mode: multiply;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 50;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .input-base {
+    @apply w-full bg-transparent border-b-2 border-ink/20 px-0 py-2 text-ink font-mono text-lg
+           focus:outline-none focus:border-blood transition-colors;
+  }
+
+  .label-base {
+    @apply block text-sm uppercase tracking-widest text-mute font-body font-medium mb-1;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-ink text-cream
+           font-display font-medium text-lg tracking-tight uppercase
+           hover:bg-blood transition-colors cursor-pointer
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-2 border-2 border-ink text-ink
+           font-display font-medium tracking-tight uppercase
+           hover:bg-ink hover:text-cream transition-colors cursor-pointer;
+  }
+}
+
+/* Smooth reveal animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes numberReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.92);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.reveal {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.reveal-delay-1 { animation-delay: 0.1s; }
+.reveal-delay-2 { animation-delay: 0.2s; }
+.reveal-delay-3 { animation-delay: 0.3s; }
+.reveal-delay-4 { animation-delay: 0.4s; }
+.reveal-delay-5 { animation-delay: 0.5s; }
+
+.number-reveal {
+  animation: numberReveal 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Main content above texture */
+main, header, footer {
+  position: relative;
+  z-index: 2;
+}
+
+/* Selection */
+::selection {
+  background: #8B2E1F;
+  color: #F5F1E8;
+}

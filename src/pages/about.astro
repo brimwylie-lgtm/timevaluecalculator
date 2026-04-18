@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="About — What's My Time Worth"
+  description="A small tool for a big idea: your salary is not what your time is worth."
+>
+  <main class="max-w-2xl mx-auto px-6 py-16 md:py-24">
+    <a href="/" class="font-mono text-xs uppercase tracking-widest text-mute hover:text-blood">
+      &larr; Back to the calculator
+    </a>
+
+    <h1 class="font-display font-light text-5xl md:text-6xl tracking-tightest mt-8 mb-10">
+      About
+    </h1>
+
+    <div class="space-y-6 font-body text-lg leading-relaxed">
+      <p>
+        This is a single-purpose calculator that asks a simple question: when
+        you subtract everything your job actually costs you, and divide by
+        every hour it actually takes, what's your real hourly wage?
+      </p>
+
+      <p>
+        The answer is almost always smaller than the number on your offer
+        letter. Sometimes a lot smaller.
+      </p>
+
+      <p>
+        The concept comes from the 1992 book <em>Your Money or Your Life</em>
+        by Vicki Robin and Joe Dominguez. The math has been around for
+        thirty years. The internet has been surprisingly bad at putting it
+        into a tool that loads fast, doesn't ask for your email, and lets
+        you type in what you're about to buy to see what it actually costs
+        you in time.
+      </p>
+
+      <p>
+        That's what this is.
+      </p>
+
+      <div class="pt-8 border-t border-ink/10 mt-12">
+        <h2 class="font-display font-light text-2xl tracking-tightest mb-4">
+          No, seriously, no signup
+        </h2>
+        <p>
+          Every calculation runs in your browser. We don't store your
+          numbers, send them anywhere, or try to upsell you on a
+          subscription. If you want, you can look at the source.
+        </p>
+      </div>
+
+      <div class="pt-8 border-t border-ink/10 mt-12">
+        <h2 class="font-display font-light text-2xl tracking-tightest mb-4">Contact</h2>
+        <p>
+          Corrections, complaints, or calculator ideas:{' '}
+          <a
+            href="mailto:hello@whatsmytimeworth.com"
+            class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood"
+          >
+            hello@whatsmytimeworth.com
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <footer class="mt-24 pt-12 border-t border-ink/10">
+      <a href="/" class="btn-primary">Back to the calculator</a>
+    </footer>
+  </main>
+</Base>

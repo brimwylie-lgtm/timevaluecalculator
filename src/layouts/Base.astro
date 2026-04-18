@@ -1,0 +1,54 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+}
+
+const {
+  title,
+  description = 'Your salary tells you what your time is worth. It\'s lying. Find out your real hourly wage, after taxes, commute, and every hidden cost of going to work.',
+  canonical,
+} = Astro.props;
+
+const ogTitle = title;
+const ogDescription = description;
+const siteUrl = Astro.site?.toString() ?? 'https://whatsmytimeworth.com';
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="What's My Time Worth" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDescription} />
+
+    <!-- Theme -->
+    <meta name="theme-color" content="#F5F1E8" />
+
+    <!-- AdSense placeholder: uncomment and fill in client ID when ready -->
+    <!-- <script async src="https://pagead2.googlesystemcontent.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

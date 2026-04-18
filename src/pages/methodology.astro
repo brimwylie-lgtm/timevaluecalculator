@@ -1,0 +1,177 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Methodology — What's My Time Worth"
+  description="How we calculate your real hourly wage. The full math, the data sources, and what we deliberately leave out."
+>
+  <main class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+    <a href="/" class="font-mono text-xs uppercase tracking-widest text-mute hover:text-blood">
+      &larr; Back to the calculator
+    </a>
+
+    <h1 class="font-display font-light text-5xl md:text-6xl tracking-tightest mt-8 mb-10">
+      Methodology
+    </h1>
+
+    <p class="font-display italic text-2xl text-ink-soft mb-16 leading-snug">
+      The math, the sources, and what we deliberately leave out.
+    </p>
+
+    <article class="prose-custom space-y-10 font-body text-lg leading-relaxed">
+      <section>
+        <h2 class="font-display font-light text-3xl tracking-tightest mb-4">The idea</h2>
+        <p>
+          "Real hourly wage" is not our idea. It comes from <em>Your Money or Your Life</em>
+          by Vicki Robin and Joe Dominguez, published in 1992. The argument: your
+          stated salary overstates what your time is worth, because the job
+          imposes costs — in money and in time — that don't appear on your pay
+          stub. Subtract those, divide by the actual hours work consumes, and
+          you get the real number.
+        </p>
+        <p>
+          This calculator implements that idea. No political agenda, no
+          behavioural advice, no subscription pitch. Just the math.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display font-light text-3xl tracking-tightest mb-4">The formula</h2>
+        <div class="bg-ink text-cream p-6 md:p-8 font-mono text-base leading-loose border-l-4 border-blood">
+          Real hourly wage =<br />
+          &nbsp;&nbsp;(after-tax income − job-related costs)<br />
+          &nbsp;&nbsp;÷ (work hours + commute + prep + unpaid OT), annualized.
+        </div>
+      </section>
+
+      <section>
+        <h2 class="font-display font-light text-3xl tracking-tightest mb-4">Tax calculation</h2>
+        <p>
+          We use <strong>2025 US federal tax brackets</strong> (the most recent finalized
+          brackets per IRS Revenue Procedure 2024-40) and the standard deduction
+          for your filing status. FICA is applied at the statutory rates: 6.2%
+          Social Security on wages up to $176,100 and 1.45% Medicare on all
+          wages, with an additional 0.9% Medicare surcharge on income above
+          $200,000 (single) or $250,000 (married).
+        </p>
+        <p>
+          State tax uses a <strong>flat top-marginal-rate approximation</strong> sourced from
+          the Tax Foundation's 2025 state individual income tax data. This is
+          deliberately a simplification: states with progressive brackets will
+          show slightly overstated tax for middle earners. For a precise
+          state-tax-bracket calculation, use your state's official tool.
+        </p>
+        <p class="text-mute italic">
+          We do not model itemized deductions, pre-tax 401(k) contributions,
+          HSA contributions, child tax credits, earned income credits, or local
+          and city taxes. These affect individual cases but not the overall
+          argument the tool is making.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display font-light text-3xl tracking-tightest mb-4">Work hours</h2>
+        <p>
+          We annualize at <strong>50 weeks per year</strong> to account for a reasonable two
+          weeks of vacation and holidays. Your actual working weeks may differ.
+        </p>
+        <p>
+          Your real work week combines official hours, commute (one-way × 2 ×
+          days per week), morning prep, and unpaid overtime. The tool
+          deliberately counts these as work time because they are time the job
+          takes that you would not spend on a day without the job.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display font-light text-3xl tracking-tightest mb-4">Job costs</h2>
+        <p>
+          Only costs that exist <em>because</em> of the job count. The tool
+          prompts you to only enter work clothing you wouldn't own otherwise,
+          childcare hours that exist because you work, and so on. This is a
+          judgment call on the user's part. A generous interpretation
+          understates the real wage; a strict interpretation overstates it.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display font-light text-3xl tracking-tightest mb-4">
+          What we deliberately leave out
+        </h2>
+        <ul class="space-y-3 list-disc pl-6">
+          <li>
+            <strong>Retirement contributions.</strong> Your 401(k) or IRA is your money,
+            not a cost of working. We don't deduct it.
+          </li>
+          <li>
+            <strong>Health insurance premiums.</strong> Varies enormously by employer and
+            plan type. Including it requires more inputs than the v1 wizard
+            allows.
+          </li>
+          <li>
+            <strong>Stress, sleep, and life-shortening effects.</strong> Not quantifiable.
+            Leaving them out keeps the math defensible.
+          </li>
+          <li>
+            <strong>Employer-provided benefits.</strong> Health insurance, matching 401(k),
+            transit passes, stock grants. A strict implementation would add
+            these back. We don't, to keep the tool simple.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="font-display font-light text-3xl tracking-tightest mb-4">Data sources</h2>
+        <ul class="space-y-2 list-disc pl-6 text-base">
+          <li>
+            IRS Revenue Procedure 2024-40 (2025 federal tax brackets &
+            standard deduction)
+          </li>
+          <li>
+            Social Security Administration 2025 wage base announcement
+          </li>
+          <li>
+            Tax Foundation, <em>State Individual Income Tax Rates and Brackets,
+            2025</em>
+          </li>
+          <li>
+            Vicki Robin & Joe Dominguez, <em>Your Money or Your Life</em>, 1992
+            (revised 2018)
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="font-display font-light text-3xl tracking-tightest mb-4">
+          If you spot an error
+        </h2>
+        <p>
+          Every calculation runs in your browser. Nothing is stored, nothing is
+          sent anywhere. If the math seems off, you can check it yourself: all
+          the logic is in the open-source <code class="font-mono text-base bg-cream-dark px-2 py-0.5">calculator.ts</code> file.
+        </p>
+        <p>
+          Corrections welcome via the contact link on the about page.
+        </p>
+      </section>
+    </article>
+
+    <footer class="mt-24 pt-12 border-t border-ink/10">
+      <a href="/" class="btn-primary">Back to the calculator</a>
+    </footer>
+  </main>
+</Base>
+
+<style is:global>
+  .prose-custom h2 {
+    margin-top: 2rem;
+  }
+  .prose-custom strong {
+    font-weight: 600;
+    color: #1A1A1A;
+  }
+  .prose-custom em {
+    font-style: italic;
+  }
+</style>
