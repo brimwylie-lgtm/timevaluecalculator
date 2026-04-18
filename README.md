@@ -83,6 +83,19 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v1.8 added over v1.7
+
+- **Logo fixes.** The full variant's viewBox was too narrow, causing "Wage"
+  to be clipped. Also rebuilt both variants using a single flowing `<text>`
+  element with `<tspan>` children instead of absolutely-positioned separate
+  text elements — much more robust. Viewbox widened from 600x220 to 800x280.
+  The full variant now also includes masthead rules top and bottom and an
+  "A CALCULATOR / VOL. 01" eyebrow, matching the OG image aesthetic.
+- **Google Analytics.** GA4 tracking (measurement ID G-EHFLML0P50) added to
+  `Base.astro` immediately after the `<head>` tag per Google's instructions.
+  Uses Astro's `is:inline` directive on the inline script so it's output
+  verbatim without bundler interference. Loads on every page automatically.
+
 ## What v1.7 added over v1.6
 
 **The AfterWage rebrand.** The whole project is now branded as **AfterWage**

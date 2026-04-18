@@ -1,8 +1,8 @@
 ---
 // AfterWage logo — the bracket direction.
 // Variants:
-//   full     — masthead lockup with tagline (homepage footer, OG image)
-//   compact  — [After] Wage inline, no tagline (subpage headers)
+//   full     — masthead lockup with tagline (homepage footer, large displays)
+//   compact  — [After] Wage inline, no tagline (headers, subpage tops)
 //   mark     — [a] bracket only (favicon, tight spaces, watermarks)
 //
 // Props:
@@ -10,6 +10,7 @@
 //   theme:    'light' | 'dark'               default 'light'
 //              light = ink on cream; dark = cream on ink
 //   size:     number (height in px)          default depends on variant
+//   className: optional CSS classes
 
 export interface Props {
   variant?: 'full' | 'compact' | 'mark';
@@ -25,47 +26,60 @@ const {
   className = '',
 } = Astro.props;
 
-// Theme colors
 const ink = theme === 'light' ? '#1A1A1A' : '#F5F1E8';
 const accent = theme === 'light' ? '#8B2E1F' : '#D4A87E';
-const mute = theme === 'light' ? '#2C2C2C' : '#EDE7D6';
+const mute = theme === 'light' ? '#2C2C2C' : '#B8895C';
 
-const defaultSizes = { full: 120, compact: 36, mark: 32 };
+const defaultSizes = { full: 140, compact: 40, mark: 32 };
 const h = size ?? defaultSizes[variant];
 ---
 
 {variant === 'full' && (
   <svg
-    viewBox="0 0 600 220"
+    viewBox="0 0 800 280"
     xmlns="http://www.w3.org/2000/svg"
-    style={`height: ${h}px; width: auto;`}
+    style={`height: ${h}px; width: auto; display: block;`}
     class={className}
     aria-label="AfterWage"
     role="img"
   >
-    <g transform="translate(300, 110)">
-      <text x="-130" y="0" font-family="'JetBrains Mono', monospace" font-weight="400" font-size="78" text-anchor="end" fill={ink}>[</text>
-      <text x="-5" y="0" font-family="Fraunces, Georgia, serif" font-weight="300" font-size="62" text-anchor="middle" fill={accent} style="font-variation-settings: 'SOFT' 50;">After</text>
-      <text x="110" y="0" font-family="'JetBrains Mono', monospace" font-weight="400" font-size="78" text-anchor="start" fill={ink}>]</text>
-      <text x="210" y="0" font-family="Fraunces, Georgia, serif" font-weight="300" font-style="italic" font-size="62" text-anchor="start" fill={ink} style="font-variation-settings: 'SOFT' 70;">Wage</text>
-    </g>
-    <text x="300" y="170" font-family="Fraunces, Georgia, serif" font-style="italic" font-weight="300" font-size="20" text-anchor="middle" fill={mute} style="font-variation-settings: 'SOFT' 60;">what's my time worth?</text>
+    {/* Masthead rules top/bottom */}
+    <line x1="100" y1="40" x2="700" y2="40" stroke={ink} stroke-width="1" />
+
+    {/* Top eyebrow */}
+    <text x="400" y="30" font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="12" font-weight="500" letter-spacing="5" text-anchor="middle" fill={mute}>A CALCULATOR / VOL. 01</text>
+
+    {/* Main lockup - single text element with tspans flows naturally */}
+    <text x="400" y="150" font-family="Fraunces, Georgia, serif" font-size="84" font-weight="300" text-anchor="middle">
+      <tspan font-family="ui-monospace, 'JetBrains Mono', monospace" font-weight="400" font-size="100" fill={ink}>[</tspan>
+      <tspan fill={accent} dx="6">After</tspan>
+      <tspan font-family="ui-monospace, 'JetBrains Mono', monospace" font-weight="400" font-size="100" fill={ink} dx="6">]</tspan>
+      <tspan font-style="italic" fill={ink} dx="10">Wage</tspan>
+    </text>
+
+    {/* Tagline */}
+    <text x="400" y="210" font-family="Fraunces, Georgia, serif" font-style="italic" font-weight="300" font-size="26" text-anchor="middle" fill={mute}>what's my time worth?</text>
+
+    {/* Bottom rule */}
+    <line x1="100" y1="240" x2="700" y2="240" stroke={ink} stroke-width="1" />
   </svg>
 )}
 
 {variant === 'compact' && (
   <svg
-    viewBox="0 0 220 48"
+    viewBox="0 0 260 48"
     xmlns="http://www.w3.org/2000/svg"
-    style={`height: ${h}px; width: auto;`}
+    style={`height: ${h}px; width: auto; display: block;`}
     class={className}
     aria-label="AfterWage"
     role="img"
   >
-    <text x="6" y="32" font-family="'JetBrains Mono', monospace" font-weight="400" font-size="22" fill={ink}>[</text>
-    <text x="20" y="32" font-family="Fraunces, Georgia, serif" font-weight="300" font-size="22" fill={accent} style="font-variation-settings: 'SOFT' 50;">After</text>
-    <text x="78" y="32" font-family="'JetBrains Mono', monospace" font-weight="400" font-size="22" fill={ink}>]</text>
-    <text x="96" y="32" font-family="Fraunces, Georgia, serif" font-weight="300" font-style="italic" font-size="22" fill={ink} style="font-variation-settings: 'SOFT' 70;">Wage</text>
+    <text x="0" y="34" font-family="Fraunces, Georgia, serif" font-size="26" font-weight="300">
+      <tspan font-family="ui-monospace, 'JetBrains Mono', monospace" font-weight="400" font-size="30" fill={ink}>[</tspan>
+      <tspan fill={accent} dx="2">After</tspan>
+      <tspan font-family="ui-monospace, 'JetBrains Mono', monospace" font-weight="400" font-size="30" fill={ink} dx="2">]</tspan>
+      <tspan font-style="italic" fill={ink} dx="4">Wage</tspan>
+    </text>
   </svg>
 )}
 
@@ -73,11 +87,11 @@ const h = size ?? defaultSizes[variant];
   <svg
     viewBox="0 0 64 64"
     xmlns="http://www.w3.org/2000/svg"
-    style={`height: ${h}px; width: ${h}px;`}
+    style={`height: ${h}px; width: ${h}px; display: block;`}
     class={className}
     aria-label="AfterWage"
     role="img"
   >
-    <text x="32" y="44" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="36" text-anchor="middle" fill={ink}>[<tspan fill={accent}>a</tspan>]</text>
+    <text x="32" y="44" font-family="ui-monospace, 'JetBrains Mono', monospace" font-weight="500" font-size="36" text-anchor="middle" fill={ink}>[<tspan fill={accent}>a</tspan>]</text>
   </svg>
 )}
