@@ -83,6 +83,15 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v1.9 added over v1.8.1
+
+- **Sitemap integration pre-installed.** `@astrojs/sitemap` added to
+  `package.json` dependencies and registered in `astro.config.mjs` with
+  per-page priority hints (homepage 1.0, content pages 0.8, compliance
+  pages 0.3). Running `npm install` then `npm run build` now automatically
+  produces `dist/sitemap-index.xml` and `dist/sitemap-0.xml`.
+- No need to run `npx astro add sitemap` manually.
+
 ## What v1.8.1 added over v1.8
 
 - Fixed `robots.txt` sitemap URL from `/sitemap.xml` to `/sitemap-index.xml`
