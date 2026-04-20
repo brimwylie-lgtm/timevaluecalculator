@@ -83,6 +83,39 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v2.0 added over v1.9
+
+**Analytics instrumentation and copyright.**
+
+- New `src/lib/track.ts` — typed wrapper around `gtag()` with a `EventName`
+  union that forces consistency and catches typos at build time. Safe to
+  call during SSR or with ad blockers active (no-op in both cases).
+- `calc_started` event fires when the user clicks "Find out" on the intro.
+- `calc_completed` event fires via `useEffect` when the result view first
+  renders. Fires again on revisions (user hit Edit, changed inputs, returned
+  to result) — intentional, since each completion is a real engagement.
+- `share_clicked` event fires from all six share paths in
+  `PurchaseShareButtons`: twitter, reddit, linkedin, whatsapp, copy, native.
+  Each includes `platform` and `context: 'purchase'` parameters.
+- Copyright notice added to both footers: "&copy; 2026 AfterWage. All rights
+  reserved." Homepage footer uses a dedicated bottom section separated by a
+  hairline rule; subpage SiteFooter uses a single line below the nav.
+
+**GA4 setup required after deploy:**
+
+1. In DebugView, verify events are firing (install the GA Debugger Chrome
+   extension, enable it on the deployed site, step through the calculator).
+2. Admin → Custom definitions → Create custom dimensions:
+   - `Share Platform` (parameter: `platform`, scope: Event)
+   - `Share Context` (parameter: `context`, scope: Event)
+3. Admin → Events → Mark `calc_completed` as key event. Optionally
+   `share_clicked` too.
+4. Explore → Funnel exploration → build page_view → calc_started →
+   calc_completed funnel.
+
+Custom dimensions only capture data from creation forward; register them
+immediately after first deploy to avoid losing early data.
+
 ## What v1.9 added over v1.8.1
 
 - **Sitemap integration pre-installed.** `@astrojs/sitemap` added to

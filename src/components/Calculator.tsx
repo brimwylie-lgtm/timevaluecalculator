@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   calculateWage,
   applyScenarios,
@@ -14,6 +14,7 @@ import { STATE_TAX_FLAT } from '../data/tax';
 import { CATALOG, type CatalogItem } from '../data/catalog';
 import ShareImage from './ShareImage';
 import PurchaseShareButtons from './PurchaseShareButtons';
+import { track } from '../lib/track';
 
 const DEFAULT_INPUTS: WageInputs = {
   annualSalary: 75000,
@@ -40,6 +41,15 @@ export default function Calculator() {
   const [inputs, setInputs] = useState<WageInputs>(DEFAULT_INPUTS);
 
   const result = useMemo(() => calculateWage(inputs), [inputs]);
+
+  // Fire calc_completed exactly once when the user reaches the result step.
+  // useEffect runs after render; dep array on `step` means it fires whenever
+  // step changes, and the conditional inside ensures we only report on results.
+  useEffect(() => {
+    if (step === 'result') {
+      track('calc_completed');
+    }
+  }, [step]);
 
   const update = <K extends keyof WageInputs>(key: K, value: WageInputs[K]) => {
     setInputs((prev) => ({ ...prev, [key]: value }));
@@ -116,7 +126,13 @@ function Intro({ onStart }: { onStart: () => void }) {
       </div>
 
       <div className="reveal reveal-delay-5 mt-16">
-        <button onClick={onStart} className="btn-primary">
+        <button
+          onClick={() => {
+            track('calc_started');
+            onStart();
+          }}
+          className="btn-primary"
+        >
           Find out &rarr;
         </button>
         <p className="mt-6 font-mono text-xs text-mute uppercase tracking-widest">

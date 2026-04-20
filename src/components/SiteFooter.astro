@@ -3,17 +3,22 @@ import Logo from './Logo.astro';
 ---
 
 <footer class="relative z-10 mt-24 border-t border-ink/10 py-12">
-  <div class="max-w-3xl mx-auto px-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
-    <a href="/" class="inline-flex items-center hover:opacity-70 transition-opacity">
-      <Logo variant="compact" size={28} />
-    </a>
-    <nav class="flex gap-5 font-mono text-xs uppercase tracking-widest flex-wrap">
-      <a href="/" class="hover:text-blood">Home</a>
-      <a href="/methodology" class="hover:text-blood">Methodology</a>
-      <a href="/about" class="hover:text-blood">About</a>
-      <a href="/contact" class="hover:text-blood">Contact</a>
-      <a href="/privacy" class="hover:text-blood">Privacy</a>
-      <a href="/terms" class="hover:text-blood">Terms</a>
-    </nav>
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <a href="/" class="inline-flex items-center hover:opacity-70 transition-opacity">
+        <Logo variant="compact" size={28} />
+      </a>
+      <nav class="flex gap-5 font-mono text-xs uppercase tracking-widest flex-wrap">
+        <a href="/" class="hover:text-blood">Home</a>
+        <a href="/methodology" class="hover:text-blood">Methodology</a>
+        <a href="/about" class="hover:text-blood">About</a>
+        <a href="/contact" class="hover:text-blood">Contact</a>
+        <a href="/privacy" class="hover:text-blood">Privacy</a>
+        <a href="/terms" class="hover:text-blood">Terms</a>
+      </nav>
+    </div>
+    <p class="mt-8 font-mono text-xs uppercase tracking-widest text-mute">
+      &copy; 2026 AfterWage. All rights reserved.
+    </p>
   </div>
 </footer>

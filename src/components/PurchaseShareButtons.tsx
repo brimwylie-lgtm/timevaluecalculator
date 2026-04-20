@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { track, type SharePlatform } from '../lib/track';
 
 interface Props {
   purchaseName: string;
@@ -43,8 +44,13 @@ export default function PurchaseShareButtons({
   const shareText = `${thing} costs me ${formatValue(primaryValue)} ${primaryUnit} of my life. Find yours:`;
   const shareTextWithUrl = `${shareText} ${siteUrl}`;
 
+  const fireShareEvent = (platform: SharePlatform) => {
+    track('share_clicked', { platform, context: 'purchase' });
+  };
+
   // Native share (mobile-first)
   const nativeShare = async () => {
+    fireShareEvent('native');
     try {
       await navigator.share({
         title: 'AfterWage',
@@ -57,6 +63,7 @@ export default function PurchaseShareButtons({
   };
 
   const copyLink = async () => {
+    fireShareEvent('copy');
     try {
       await navigator.clipboard.writeText(shareTextWithUrl);
       setCopied(true);
@@ -93,16 +100,16 @@ export default function PurchaseShareButtons({
 
       {/* Desktop: platform-specific buttons. Also shown on mobile as fallback if no native share. */}
       <div className={hasNativeShare ? 'hidden sm:flex sm:flex-wrap sm:gap-3' : 'flex flex-wrap gap-3'}>
-        <ShareButton href={twitterUrl} label="Twitter / X">
+        <ShareButton href={twitterUrl} label="Twitter / X" onTrack={() => fireShareEvent('twitter')}>
           <TwitterIcon />
         </ShareButton>
-        <ShareButton href={redditUrl} label="Reddit">
+        <ShareButton href={redditUrl} label="Reddit" onTrack={() => fireShareEvent('reddit')}>
           <RedditIcon />
         </ShareButton>
-        <ShareButton href={linkedinUrl} label="LinkedIn">
+        <ShareButton href={linkedinUrl} label="LinkedIn" onTrack={() => fireShareEvent('linkedin')}>
           <LinkedInIcon />
         </ShareButton>
-        <ShareButton href={whatsappUrl} label="WhatsApp">
+        <ShareButton href={whatsappUrl} label="WhatsApp" onTrack={() => fireShareEvent('whatsapp')}>
           <WhatsAppIcon />
         </ShareButton>
         <button
@@ -121,10 +128,12 @@ export default function PurchaseShareButtons({
 function ShareButton({
   href,
   label,
+  onTrack,
   children,
 }: {
   href: string;
   label: string;
+  onTrack?: () => void;
   children: React.ReactNode;
 }) {
   return (
@@ -132,6 +141,7 @@ function ShareButton({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={onTrack}
       aria-label={`Share on ${label}`}
       title={`Share on ${label}`}
       className="flex items-center gap-2 px-4 py-2 bg-cream/10 hover:bg-cream/20 border border-cream/20 text-cream text-sm font-mono uppercase tracking-wider transition-colors"

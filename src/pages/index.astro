@@ -173,21 +173,26 @@ const faqSchema = {
   </section>
 
   <footer class="relative z-10 border-t border-ink/10 py-16">
-    <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row md:items-end justify-between gap-8">
-      <div>
-        <Logo variant="full" size={100} />
-        <p class="font-body italic text-mute max-w-md mt-6">
-          Based on the "real hourly wage" concept from <em>Your Money or Your Life</em>
-          (Vicki Robin &amp; Joe Dominguez, 1992). No affiliation.
-        </p>
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+        <div>
+          <Logo variant="full" size={100} />
+          <p class="font-body italic text-mute max-w-md mt-6">
+            Based on the "real hourly wage" concept from <em>Your Money or Your Life</em>
+            (Vicki Robin &amp; Joe Dominguez, 1992). No affiliation.
+          </p>
+        </div>
+        <nav class="flex gap-6 font-mono text-xs uppercase tracking-widest flex-wrap">
+          <a href="/methodology" class="hover:text-blood">Methodology</a>
+          <a href="/about" class="hover:text-blood">About</a>
+          <a href="/contact" class="hover:text-blood">Contact</a>
+          <a href="/privacy" class="hover:text-blood">Privacy</a>
+          <a href="/terms" class="hover:text-blood">Terms</a>
+        </nav>
       </div>
-      <nav class="flex gap-6 font-mono text-xs uppercase tracking-widest flex-wrap">
-        <a href="/methodology" class="hover:text-blood">Methodology</a>
-        <a href="/about" class="hover:text-blood">About</a>
-        <a href="/contact" class="hover:text-blood">Contact</a>
-        <a href="/privacy" class="hover:text-blood">Privacy</a>
-        <a href="/terms" class="hover:text-blood">Terms</a>
-      </nav>
+      <p class="mt-12 pt-8 border-t border-ink/10 font-mono text-xs uppercase tracking-widest text-mute">
+        &copy; 2026 AfterWage. All rights reserved.
+      </p>
     </div>
   </footer>
 </Base>
