@@ -1,0 +1,34 @@
+---
+// Minimal transparent header used site-wide.
+// Sits absolute-positioned at the top, overlaying whatever is behind it.
+// Two themes control the color of the logo and nav links:
+//   'light'   - for subpages on cream background (ink-on-cream)
+//   'dark'    - for the homepage overlaying the dark ink hero (cream-on-ink)
+//
+// The header is NOT sticky — it scrolls away naturally so it doesn't eat
+// viewport space on the calculator wizard or result view.
+
+import Logo from './Logo.astro';
+
+export interface Props {
+  theme?: 'light' | 'dark';
+}
+
+const { theme = 'light' } = Astro.props;
+
+const linkColor = theme === 'light' ? 'text-ink-soft hover:text-blood' : 'text-cream/80 hover:text-cream';
+---
+
+<header class="absolute top-0 left-0 right-0 z-20">
+  <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between gap-4">
+    <a href="/" class="inline-flex items-center hover:opacity-80 transition-opacity" aria-label="AfterWage home">
+      <Logo variant="compact" size={28} theme={theme} />
+    </a>
+
+    <nav class={`flex gap-6 font-mono text-xs uppercase tracking-widest ${linkColor} transition-colors`}>
+      <a href="/methodology" class="hover:text-current">Methodology</a>
+      <a href="/about" class="hover:text-current">About</a>
+      <a href="/contact" class="hover:text-current">Contact</a>
+    </nav>
+  </div>
+</header>

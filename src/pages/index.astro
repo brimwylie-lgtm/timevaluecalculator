@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Calculator from '../components/Calculator';
 import Logo from '../components/Logo.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 import { HOMEPAGE_FAQS } from '../data/faq';
 
 const siteUrl = Astro.site?.toString() ?? 'https://afterwage.com';
@@ -49,6 +50,8 @@ const faqSchema = {
   keywords="afterwage, real hourly wage calculator, true hourly wage calculator, take home pay calculator, salary to hourly calculator after taxes, real wage calculator, affordability calculator, what is my salary really worth, hidden cost of working, your money or your life calculator, cost of living after taxes"
   structuredData={[webAppSchema, faqSchema]}
 >
+  <SiteHeader theme="dark" />
+
   <main>
     <Calculator client:load />
   </main>
@@ -190,9 +193,18 @@ const faqSchema = {
           <a href="/terms" class="hover:text-blood">Terms</a>
         </nav>
       </div>
-      <p class="mt-12 pt-8 border-t border-ink/10 font-mono text-xs uppercase tracking-widest text-mute">
-        &copy; 2026 AfterWage. All rights reserved.
-      </p>
+      <div class="mt-12 pt-8 border-t border-ink/10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <p class="font-mono text-xs uppercase tracking-widest text-mute">
+          &copy; 2026 AfterWage. All rights reserved.
+        </p>
+        <nav class="flex gap-5 font-mono text-xs uppercase tracking-widest" aria-label="Social media">
+          <a href="https://www.instagram.com/afterwagecalc/" target="_blank" rel="noopener noreferrer" class="text-mute hover:text-blood">Instagram</a>
+          <a href="https://www.threads.com/@afterwagecalc" target="_blank" rel="noopener noreferrer" class="text-mute hover:text-blood">Threads</a>
+          <a href="https://www.tiktok.com/@afterwage" target="_blank" rel="noopener noreferrer" class="text-mute hover:text-blood">TikTok</a>
+          <a href="https://www.youtube.com/@AfterWage" target="_blank" rel="noopener noreferrer" class="text-mute hover:text-blood">YouTube</a>
+          <a href="https://twitter.com/afterwage" target="_blank" rel="noopener noreferrer" class="text-mute hover:text-blood">X</a>
+        </nav>
+      </div>
     </div>
   </footer>
 </Base>

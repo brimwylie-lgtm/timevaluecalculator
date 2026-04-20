@@ -83,6 +83,34 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v2.1 added over v2.0.1
+
+**Site header and social footer.**
+
+- New `SiteHeader.astro` component — minimal transparent header with the
+  compact logo on the left and three nav links on the right (Methodology,
+  About, Contact). Absolute positioned so it overlays the hero on the
+  homepage without displacing content. Scrolls away naturally, not sticky.
+- `theme` prop on the header: `dark` for the homepage (cream text over the
+  dark hero) and `light` for all subpages (ink text over the cream
+  background).
+- Inline logo at the top of every subpage (methodology, about, privacy,
+  terms, contact) removed — the new header handles brand placement
+  consistently. Top padding on subpage `<main>` adjusted from `py-16
+  md:py-24` to `pt-28 pb-16 md:pt-32 md:pb-24` to make room for the
+  header.
+- Social media links added to both footers (SiteFooter component + bespoke
+  homepage footer): Instagram, Threads, TikTok, YouTube, X. Rendered as
+  uppercase mono text in a row alongside the copyright line. All open in
+  new tabs with `rel="noopener noreferrer"`.
+
+**Social handles:**
+- Instagram: https://www.instagram.com/afterwagecalc/
+- Threads: https://www.threads.com/@afterwagecalc
+- TikTok: https://www.tiktok.com/@afterwage
+- YouTube: https://www.youtube.com/@AfterWage
+- X: https://twitter.com/afterwage
+
 ## What v2.0.1 added over v2.0
 
 - **Fixed Vercel build error.** `@astrojs/sitemap` 3.7.x has a known bug

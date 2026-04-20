@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import Logo from '../components/Logo.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 ---
 
 <Base
@@ -9,11 +9,9 @@ import Logo from '../components/Logo.astro';
   description="How the true hourly wage calculator works. The full math behind calculating your real take-home pay per hour after taxes, FICA, commute, lunches, and every hidden cost of working. Data sources and limitations included."
   keywords="real hourly wage calculation, true hourly wage formula, how to calculate real wage after taxes, hidden cost of working methodology"
 >
-  <main class="max-w-3xl mx-auto px-6 py-16 md:py-24">
-    <a href="/" class="inline-block mb-10 hover:opacity-70 transition-opacity">
-      <Logo variant="compact" size={32} />
-    </a>
+  <SiteHeader theme="light" />
 
+  <main class="max-w-3xl mx-auto px-6 pt-28 pb-16 md:pt-32 md:pb-24">
     <a href="/" class="block font-mono text-xs uppercase tracking-widest text-mute hover:text-blood">
       &larr; Back to the calculator
     </a>
