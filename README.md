@@ -83,6 +83,19 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v2.1.1 fixed over v2.1
+
+- **Header contrast bug.** Initial v2.1 used `text-ink-soft` and
+  `text-cream/80` for header nav links, which rendered nearly invisible
+  against the cream background. Bumped to full `text-ink` with
+  `font-medium` weight for readable contrast at the small nav size.
+- **Homepage header theme corrected.** The homepage intro uses a cream
+  background, not the ink-dark background I'd assumed. Switched homepage
+  header from `theme="dark"` to `theme="light"` to match. The `dark` theme
+  option is preserved in the component for any future dark-backgrounded
+  pages or sections.
+- **Logo size in header bumped** from 28 to 32 for better readability.
+
 ## What v2.1 added over v2.0.1
 
 **Site header and social footer.**
