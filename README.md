@@ -83,6 +83,17 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v2.0.1 added over v2.0
+
+- **Fixed Vercel build error.** `@astrojs/sitemap` 3.7.x has a known bug
+  ([withastro/astro#15894](https://github.com/withastro/astro/issues/15894))
+  that crashes the build with "Cannot read properties of undefined (reading
+  'reduce')". Pinned to exact version `3.2.1` (no caret) to prevent npm from
+  auto-upgrading to the broken release.
+- Simplified sitemap config — removed the custom `serialize` function with
+  per-page priority hints. Google largely ignores sitemap priority values,
+  and the simpler config reduces future bug surface.
+
 ## What v2.0 added over v1.9
 
 **Analytics instrumentation and copyright.**
