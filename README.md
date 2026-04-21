@@ -83,6 +83,12 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v2.2.2 fixed over v2.2.1
+
+- Corrected both Child Care Aware links (methodology body + data sources
+  list) from the wrong research-page URL to the correct state-by-state
+  resource map at `https://www.childcareaware.org/resources/state-by-state-resource-map/`.
+
 ## What v2.2.1 fixed over v2.2
 
 - Corrected all five Your Money or Your Life book links from the wrong
