@@ -16,9 +16,18 @@ import SiteHeader from '../components/SiteHeader.astro';
       &larr; Back to the calculator
     </a>
 
-    <h1 class="font-display font-light text-5xl md:text-6xl tracking-tightest mt-8 mb-10">
+    <h1 class="font-display font-light text-5xl md:text-6xl tracking-tightest mt-8 mb-6">
       Methodology
     </h1>
+
+    <p class="font-mono text-xs uppercase tracking-widest text-mute mb-10">
+      Last updated: April 20, 2026
+      <!--
+        IMPORTANT: bump this date manually whenever the methodology page or the
+        underlying calculation logic in src/data/calculator.ts changes
+        substantively. Don't bump for typo fixes or formatting tweaks.
+      -->
+    </p>
 
     <p class="font-display italic text-2xl text-ink-soft mb-16 leading-snug">
       The math, the sources, and what we deliberately leave out.
@@ -28,10 +37,10 @@ import SiteHeader from '../components/SiteHeader.astro';
       <section>
         <h2 class="font-display font-light text-3xl tracking-tightest mb-4">The idea</h2>
         <p>
-          "Real hourly wage" is not our idea. It comes from <em>Your Money or Your Life</em>
+          "Real hourly wage" is not our idea. It comes from <a href="https://yourmoneyoryourlife.com/book/" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood"><em>Your Money or Your Life</em></a>
           by Vicki Robin and Joe Dominguez, published in 1992. The argument: your
           stated salary overstates what your time is worth, because the job
-          imposes costs — in money and in time — that don't appear on your pay
+          imposes costs &mdash; in money and in time &mdash; that don't appear on your pay
           stub. Subtract those, divide by the actual hours work consumes, and
           you get the real number.
         </p>
@@ -54,15 +63,16 @@ import SiteHeader from '../components/SiteHeader.astro';
         <h2 class="font-display font-light text-3xl tracking-tightest mb-4">Tax calculation</h2>
         <p>
           We use <strong>2025 US federal tax brackets</strong> (the most recent finalized
-          brackets per IRS Revenue Procedure 2024-40) and the standard deduction
+          brackets per <a href="https://www.irs.gov/pub/irs-drop/rp-24-40.pdf" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">IRS Revenue Procedure 2024-40</a>) and the standard deduction
           for your filing status. FICA is applied at the statutory rates: 6.2%
           Social Security on wages up to $176,100 and 1.45% Medicare on all
           wages, with an additional 0.9% Medicare surcharge on income above
-          $200,000 (single) or $250,000 (married).
+          $200,000 (single) or $250,000 (married). Wage base figures are
+          published annually by the <a href="https://www.ssa.gov/oact/cola/cbb.html" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Social Security Administration</a>.
         </p>
         <p>
           State tax uses a <strong>flat top-marginal-rate approximation</strong> sourced from
-          the Tax Foundation's 2025 state individual income tax data. This is
+          the <a href="https://taxfoundation.org/data/all/state/state-income-tax-rates/" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Tax Foundation's 2025 state individual income tax data</a>. This is
           deliberately a simplification: states with progressive brackets will
           show slightly overstated tax for middle earners. For a precise
           state-tax-bracket calculation, use your state's official tool.
@@ -120,9 +130,9 @@ import SiteHeader from '../components/SiteHeader.astro';
         </h2>
         <p>
           The "What things really cost you" catalog uses mid-range 2025 US
-          prices sourced from publicly available retail data, Kelley Blue Book,
-          The Knot's average-wedding-cost report, and Child Care Aware's
-          state-by-state childcare data. Prices vary enormously by region and
+          prices sourced from publicly available retail data, <a href="https://www.kbb.com/" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Kelley Blue Book</a>,
+          <a href="https://www.theknot.com/content/average-wedding-cost" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">The Knot's average-wedding-cost report</a>, and <a href="https://www.childcareaware.org/our-issues/research/the-us-and-the-high-cost-of-child-care/" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Child Care Aware's
+          state-by-state childcare data</a>. Prices vary enormously by region and
           taste. If a number looks wrong for your situation, use the custom
           input to check your own.
         </p>
@@ -156,21 +166,38 @@ import SiteHeader from '../components/SiteHeader.astro';
 
       <section>
         <h2 class="font-display font-light text-3xl tracking-tightest mb-4">Data sources</h2>
-        <ul class="space-y-2 list-disc pl-6 text-base">
+        <ul class="space-y-3 list-disc pl-6 text-base">
           <li>
-            IRS Revenue Procedure 2024-40 (2025 federal tax brackets &
-            standard deduction)
+            <a href="https://www.irs.gov/pub/irs-drop/rp-24-40.pdf" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">IRS Revenue Procedure 2024-40</a>
+            &mdash; 2025 federal tax brackets and standard deduction.
           </li>
           <li>
-            Social Security Administration 2025 wage base announcement
+            <a href="https://www.ssa.gov/oact/cola/cbb.html" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Social Security Administration 2025 wage base</a>
+            &mdash; FICA Social Security wage cap and Medicare rates.
           </li>
           <li>
-            Tax Foundation, <em>State Individual Income Tax Rates and Brackets,
-            2025</em>
+            <a href="https://taxfoundation.org/data/all/state/state-income-tax-rates/" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Tax Foundation, <em>State Individual Income Tax Rates and Brackets, 2025</em></a>
+            &mdash; flat-rate approximations for all 50 states.
           </li>
           <li>
-            Vicki Robin & Joe Dominguez, <em>Your Money or Your Life</em>, 1992
-            (revised 2018)
+            <a href="https://www.bls.gov/oes/" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Bureau of Labor Statistics Occupational Employment and Wage Statistics</a>
+            &mdash; reference for typical US wage distributions.
+          </li>
+          <li>
+            <a href="https://yourmoneyoryourlife.com/book/" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Vicki Robin &amp; Joe Dominguez, <em>Your Money or Your Life</em></a>,
+            1992 (revised 2018) &mdash; the original "real hourly wage" concept.
+          </li>
+          <li>
+            <a href="https://www.kbb.com/" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Kelley Blue Book</a>
+            &mdash; mid-range vehicle prices for the catalog.
+          </li>
+          <li>
+            <a href="https://www.theknot.com/content/average-wedding-cost" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">The Knot Real Weddings Study</a>
+            &mdash; average wedding costs for the catalog.
+          </li>
+          <li>
+            <a href="https://www.childcareaware.org/our-issues/research/the-us-and-the-high-cost-of-child-care/" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Child Care Aware of America</a>
+            &mdash; state-level childcare cost data.
           </li>
         </ul>
       </section>
@@ -185,8 +212,28 @@ import SiteHeader from '../components/SiteHeader.astro';
           the logic is in the open-source <code class="font-mono text-base bg-cream-dark px-2 py-0.5">calculator.ts</code> file.
         </p>
         <p>
-          Corrections welcome via the contact link on the about page.
+          Corrections welcome via the <a href="/contact" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">contact form</a>.
         </p>
+      </section>
+
+      <section class="border-t border-ink/10 pt-10 mt-10">
+        <h2 class="font-display font-light text-3xl tracking-tightest mb-6">
+          Related
+        </h2>
+        <ul class="space-y-3 text-base">
+          <li>
+            <a href="/" class="font-display text-xl underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Run the calculator</a>
+            <span class="text-mute"> &mdash; back to AfterWage to find your real hourly wage.</span>
+          </li>
+          <li>
+            <a href="/about" class="font-display text-xl underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">About AfterWage</a>
+            <span class="text-mute"> &mdash; what this tool is, what it isn't, and who built it.</span>
+          </li>
+          <li>
+            <a href="/contact" class="font-display text-xl underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Report an issue</a>
+            <span class="text-mute"> &mdash; if a calculation looks wrong or a source needs updating.</span>
+          </li>
+        </ul>
       </section>
     </article>
 

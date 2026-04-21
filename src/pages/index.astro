@@ -140,9 +140,13 @@ const faqSchema = {
             <h3 class="font-display font-light text-2xl md:text-3xl tracking-tight mb-4 text-ink">
               {faq.question}
             </h3>
-            <p class="font-body text-lg leading-relaxed text-ink-soft">
-              {faq.answer}
-            </p>
+            {faq.linkedAnswer ? (
+              <p class="font-body text-lg leading-relaxed text-ink-soft" set:html={faq.linkedAnswer} />
+            ) : (
+              <p class="font-body text-lg leading-relaxed text-ink-soft">
+                {faq.answer}
+              </p>
+            )}
           </article>
         ))}
       </div>
@@ -158,18 +162,30 @@ const faqSchema = {
       <h2 class="font-display font-light text-2xl md:text-3xl tracking-tight mb-6">
         Also useful
       </h2>
-      <ul class="space-y-2 font-body text-lg text-ink-soft">
+      <ul class="space-y-3 font-body text-lg text-ink-soft">
         <li>
           <a href="/methodology" class="underline decoration-blood/40 decoration-2 underline-offset-4 hover:decoration-blood hover:text-ink">
             How the real hourly wage calculation works
           </a>
-          &nbsp;— the math, the sources, and what we deliberately leave out.
+          &nbsp;&mdash; the math, the sources, and what we deliberately leave out.
         </li>
         <li>
           <a href="/about" class="underline decoration-blood/40 decoration-2 underline-offset-4 hover:decoration-blood hover:text-ink">
-            About this calculator
+            About AfterWage
           </a>
-          &nbsp;— a small tool for a big idea.
+          &nbsp;&mdash; a small tool for a big idea.
+        </li>
+        <li>
+          <a href="/contact" class="underline decoration-blood/40 decoration-2 underline-offset-4 hover:decoration-blood hover:text-ink">
+            Report an issue or suggest a calculator
+          </a>
+          &nbsp;&mdash; corrections, ideas, and feedback.
+        </li>
+        <li>
+          <a href="/privacy" class="underline decoration-blood/40 decoration-2 underline-offset-4 hover:decoration-blood hover:text-ink">
+            Privacy policy
+          </a>
+          &nbsp;&mdash; what (little) data the site collects, in plain language.
         </li>
       </ul>
     </div>

@@ -83,6 +83,51 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v2.2 added over v2.1.1
+
+**External source links and internal linking for SEO authority signals.**
+
+External links added:
+- IRS Revenue Procedure 2024-40 (federal tax brackets)
+- Social Security Administration wage base
+- Tax Foundation state income tax data
+- Bureau of Labor Statistics (BLS) wage statistics
+- Kelley Blue Book (catalog vehicle prices)
+- The Knot wedding cost report
+- Child Care Aware (childcare cost data)
+- Your Money or Your Life book (publisher page, not Amazon)
+
+Locations:
+- Methodology: 4 inline links in body copy plus full linked sources list
+  at the bottom (8 sources total, all rel=noopener)
+- About: book and methodology linked inline
+- FAQ: 5 of 8 answers got linked variants (book, methodology, privacy)
+
+Internal linking improvements:
+- "Related" sections added to methodology, about, privacy, terms — each
+  linking to 3 sibling pages with descriptive anchor text. Wikipedia-style
+  internal linking that Google rewards for crawl-graph signals.
+- Homepage Related section expanded from 2 to 4 links (added contact and
+  privacy).
+- About page now inline-links to methodology and privacy where natural.
+- Methodology corrections link fixed — was pointing to "the contact link
+  on the about page" (indirect); now links directly to /contact.
+
+FAQ data structure:
+- New optional `linkedAnswer` field on `FaqItem` carries HTML version
+  with inline links. The plain `answer` field stays text-only because
+  it's used in the JSON-LD FAQPage schema, which doesn't render HTML.
+- Homepage FAQ render uses `set:html` with `linkedAnswer` when present,
+  falls back to plain answer otherwise.
+
+Last-updated dates:
+- Methodology: April 20, 2026 (with comment to bump on substantive changes)
+- About: April 20, 2026
+
+All external links use `target="_blank"` with `rel="noopener noreferrer"`.
+No `nofollow` — passing link equity to authoritative sources is part of
+the legitimacy signal.
+
 ## What v2.1.1 fixed over v2.1
 
 - **Header contrast bug.** Initial v2.1 used `text-ink-soft` and

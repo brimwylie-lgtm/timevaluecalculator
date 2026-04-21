@@ -16,9 +16,13 @@ import SiteHeader from '../components/SiteHeader.astro';
       &larr; Back to the calculator
     </a>
 
-    <h1 class="font-display font-light text-5xl md:text-6xl tracking-tightest mt-8 mb-10">
+    <h1 class="font-display font-light text-5xl md:text-6xl tracking-tightest mt-8 mb-6">
       About
     </h1>
+
+    <p class="font-mono text-xs uppercase tracking-widest text-mute mb-10">
+      Last updated: April 20, 2026
+    </p>
 
     <div class="space-y-6 font-body text-lg leading-relaxed">
       <p>
@@ -33,7 +37,7 @@ import SiteHeader from '../components/SiteHeader.astro';
       </p>
 
       <p>
-        The concept comes from the 1992 book <em>Your Money or Your Life</em>
+        The concept comes from the 1992 book <a href="https://yourmoneyoryourlife.com/book/" target="_blank" rel="noopener noreferrer" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood"><em>Your Money or Your Life</em></a>
         by Vicki Robin and Joe Dominguez. The math has been around for
         thirty years. The internet has been surprisingly bad at putting it
         into a tool that loads fast, doesn't ask for your email, and lets
@@ -42,7 +46,8 @@ import SiteHeader from '../components/SiteHeader.astro';
       </p>
 
       <p>
-        That's what this is.
+        That's what this is. The full math is on the <a href="/methodology" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">methodology page</a>
+        if you want to see exactly how the numbers are produced.
       </p>
 
       <div class="pt-8 border-t border-ink/10 mt-12">
@@ -52,14 +57,16 @@ import SiteHeader from '../components/SiteHeader.astro';
         <p>
           Every calculation runs in your browser. We don't store your
           numbers, send them anywhere, or try to upsell you on a
-          subscription. If you want, you can look at the source.
+          subscription. The full data-handling story is in the
+          <a href="/privacy" class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">privacy policy</a>
+          if you want the boring version.
         </p>
       </div>
 
       <div class="pt-8 border-t border-ink/10 mt-12">
         <h2 class="font-display font-light text-2xl tracking-tightest mb-4">Contact</h2>
         <p>
-          Corrections, complaints, or calculator ideas go through the{' '}
+          Corrections, complaints, or calculator ideas go through the
           <a
             href="/contact"
             class="underline decoration-blood decoration-2 underline-offset-4 hover:text-blood"
@@ -68,6 +75,24 @@ import SiteHeader from '../components/SiteHeader.astro';
           </a>
           . No email address on this site, because spam bots.
         </p>
+      </div>
+
+      <div class="pt-10 border-t border-ink/10 mt-12">
+        <h2 class="font-display font-light text-2xl tracking-tightest mb-6">Related</h2>
+        <ul class="space-y-3 text-base">
+          <li>
+            <a href="/" class="font-display text-xl underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Run the calculator</a>
+            <span class="text-mute"> &mdash; back to AfterWage to find your real hourly wage.</span>
+          </li>
+          <li>
+            <a href="/methodology" class="font-display text-xl underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Methodology</a>
+            <span class="text-mute"> &mdash; the full math, the sources, and what's deliberately left out.</span>
+          </li>
+          <li>
+            <a href="/contact" class="font-display text-xl underline decoration-blood decoration-2 underline-offset-4 hover:text-blood">Contact</a>
+            <span class="text-mute"> &mdash; ideas, corrections, or feedback.</span>
+          </li>
+        </ul>
       </div>
     </div>
 
