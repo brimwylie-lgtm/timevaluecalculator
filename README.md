@@ -83,6 +83,13 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v2.2.1 fixed over v2.2
+
+- Corrected all five Your Money or Your Life book links from the wrong
+  `yourmoneyoryourlife.com/book/` URL to Vicki Robin's canonical page at
+  `https://vickirobin.com/your-money-or-your-life/`. Affects methodology
+  (2 instances), about (1), and FAQ (2 linked answers).
+
 ## What v2.2 added over v2.1.1
 
 **External source links and internal linking for SEO authority signals.**
