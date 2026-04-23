@@ -14,7 +14,7 @@ export default function PurchaseShareButtons({
   purchaseCost,
   primaryValue,
   primaryUnit,
-  siteUrl = 'https://afterwage.com',
+  siteUrl = 'https://www.afterwage.com',
 }: Props) {
   const [hasNativeShare, setHasNativeShare] = useState(false);
   const [copied, setCopied] = useState(false);

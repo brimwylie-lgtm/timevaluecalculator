@@ -4,7 +4,7 @@ import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://afterwage.com',
+  site: 'https://www.afterwage.com',
   integrations: [
     react(),
     tailwind({

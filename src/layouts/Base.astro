@@ -19,7 +19,7 @@ const {
 
 const ogTitle = title;
 const ogDescription = description;
-const siteUrl = Astro.site?.toString() ?? 'https://afterwage.com';
+const siteUrl = Astro.site?.toString() ?? 'https://www.afterwage.com';
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
 
 const schemas = structuredData

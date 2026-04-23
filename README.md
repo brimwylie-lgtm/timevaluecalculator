@@ -83,6 +83,26 @@ src/
 - Matches site aesthetic (cream, serif, blood-red accent) so branding is
   consistent from feed to landing page.
 
+## What v2.3 fixed over v2.2.2
+
+**Canonical URL mismatch fix.** Vercel was configured to redirect `afterwage.com` →
+`www.afterwage.com`, but the HTML canonical tags and site config all declared
+the non-www version as authoritative. Google was seeing the mismatch and
+flagging `www.afterwage.com/methodology/` as "alternative page with proper
+canonical tag" in Search Console.
+
+Fixed by making the code match Vercel's existing www-canonical setup:
+- `astro.config.mjs` site field → `https://www.afterwage.com`
+- `Base.astro` siteUrl fallback → `https://www.afterwage.com`
+- `index.astro` siteUrl fallback → `https://www.afterwage.com`
+- `PurchaseShareButtons.tsx` default siteUrl prop → `https://www.afterwage.com`
+- `public/robots.txt` sitemap directive → `https://www.afterwage.com/sitemap-index.xml`
+
+Display-only references (share image watermark, copy-to-clipboard share text)
+deliberately left as plain `afterwage.com` without www — those are human-facing
+and shorter/cleaner. Users who type "afterwage.com" get redirected to the www
+version by Vercel, so functionally identical.
+
 ## What v2.2.2 fixed over v2.2.1
 
 - Corrected both Child Care Aware links (methodology body + data sources
